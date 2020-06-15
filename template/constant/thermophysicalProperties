@@ -1,0 +1,74 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            hePsiThermo;            // psiThermo, psiReactionThermo
+                //  heRhoThermo;            // rhoThermo, rhoReactionThermo, multiphaseMixtureThermo
+                //  heheuPsiThermo;         // psiuReactionThermo
+    mixture         pureMixture;            // fixed composition, requires sub-dictionary "mixture"
+                //  reactingMixture;        // variable composition, requires "foamChemistryFile"
+                //  homogeneousMixture;         // laminar flame speed & regress variables
+                //  inhomogeneousMixture;       // "fuel", "oxidant", "burntProducts"
+                //  veryInhomogeneousMixture;   //
+                //  egrMixture;
+                //  multiComponewntMixture;
+                //  singleStepReactingMixture;
+    transport       const;                  // constant mu & Prandtl number Pr=Cp*mu/kappa, "mu" & "Pr"
+                //  sutherland;             // calculates mu as a function of temperature T from "As" & "Ts"
+                //  polynomial;             // calculates mu and kappa as a function of temperature T
+                //  logPolynomial;          // calculates ln(mu) & ln(kappa) as a function of ln(T)
+    thermo          hConst;                 // constant "Cp" & heat of fusion "Hf"
+                //  eConst;                 // constant "Cv" & heaf of fusion "Hf"
+                //  janaf;                  // calculates "Cp" as a function of temperature T from "JANAF" table
+                //  hPolynomial;            // calculates "Cp" as a function of temperature by polynomial
+    equationOfState
+                    perfectGas;                 // rho = 1 / R*T * P
+                //  rhoConst;                   // rho = constant
+                //  incompressiblePerfectGas;   // rho = 1 / R*T * Pref
+                //  perfectFluid;               // rho = 1 / R*T * P + rho0
+                //  linear;                     // rho = Psi * P + rho0
+                //  adiabaticPerfectFluid;      // rho = rho0 * ( (P + B) / (P0 + B) )^(1/gamma)
+                //  Boussinesq;                 // rho = rho0 * [ 1 - beta ( T - T0 ) ]
+                //  PengRobinsonGas;            // rho = 1 / (z * R * T) * P
+                //  icoPolymial;
+    specie          specie;                 // only option, specified by "nMoles" & "molWeight"
+    energy          sensibleInternalEnergy; // internal energy U
+                //  sensibleEnthalpy;       // enthalpy H = U + p*V
+                //  absoluteEnthalpy;       // heat of formation included
+}
+
+mixture // air at room temperature (293 K)
+{
+    specie
+    {
+        nMoles      1;  // only for combution based on regress variable /w homogeneous mixture of reactants
+        molWeight   28.9;
+    }
+    thermodynamics
+    {
+        Cp          1005;
+        Hf          0;
+    }
+    transport
+    {
+        mu          1.82e-05;
+        Pr          0.71;
+    }
+}
+
+// ************************************************************************* //
