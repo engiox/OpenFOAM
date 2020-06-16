@@ -1,0 +1,100 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType 		laminar;	// no turbulence modeling
+	           //   RAS;		// Reynolds-Averaged Simulation modeling
+	           //   LES;		// Large-Eddy Simulation modeling
+
+RAS
+{
+    RASModel		kEpsilon;	// for far-field analysis w/o high gradients and no flow separation, HI Re#
+    		    //  kOmegaSST;	// combines both advantages using blending function (Shear Stress Transport)
+    	            //	kOmega;		// for close-to-the-walls, not for far-field calculation, LOW Re#
+		    //	buoyantKEpsilon, LaunderSharmaKE, SpalartAllmaras, kkLOmega, kOmegaSSTLM, realizableKE...
+    turbulence		on;
+    printCoeefs		on;
+    kEpsilonCoeffs	// default model coefficients
+    {
+	Cmu		0.09;
+        C1		1.44;
+        C2		1.92;
+        C3		0.0;	// -0.33 on manual
+        sigmak		1.0;
+        sigmaEps	1.3;
+    }
+    kOmegaSSTCoeffs	// default model coefficients
+    {
+	alphaK1		0.85;
+	alphaK2		1.0;
+	alphaOmega1	0.5;
+	alphaOmega2	0.856;
+	beta1		0.075;
+	beta2		0.0828;
+	betaStar	0.09;
+	gamma1		5/9;
+	gamma2		0.44;
+	a1		0.31;
+	b1		1.0;
+	c1		10.0;
+	F3		no;
+    }
+    kOmegaCoeffs	// default model coefficients
+    {
+	Cmu		0.09;	// equivalent to betaStar
+	alpha		0.52;
+	beta		0.072;
+	alphak		0.5;
+	alphaOmega	0.5;
+    }
+}
+
+LES
+{
+    LESModel            kEqn;
+	            //	SpalartAllmarasDDES;	// One quation model based on a modified turbulence viscosity
+		    //	dynamicKEqn, WALE;
+    turbulence          on;
+    printCoeffs         on;
+    delta           	cubeRootVol;	// good for isotropic hexahedral meshes, less valid when cell A/R <> 1
+		    //	smooth;
+		    //	vanDriest;	// Van Driest damping function, applied in the region up to y+ of 500
+    KEqnCoeffs		// default model coefficients
+    {
+	Ck		0.094;
+	Ce		1.048;
+    }
+    cubeRootVolCoeffs
+    {
+	// Optional entries
+	
+	// Multiplier
+	deltaCoeff	1;
+    }
+    vanDriestCoeffs
+    {
+        delta           <geometricDelta>;
+	            // 	cubeRootVol;
+	// Optional entries
+	kappa		0.41;
+	Aplus		26;
+	Cdelta		0.158;
+	calcInterval	1;
+    }
+}
+
+
+// ************************************************************************* //

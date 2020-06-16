@@ -52,17 +52,17 @@ thermoType
                 //  absoluteEnthalpy;       // heat of formation included
 }
 
-mixture // air at room temperature (293 K)
+air              // air at room temperature (293 K)
 {
     specie
     {
         nMoles      1;  // only for combution based on regress variable /w homogeneous mixture of reactants
-        molWeight   28.9;
+        molWeight   28.96;
     }
     thermodynamics
     {
-        Cp          1005;
-        Hf          0;
+        Cp          1004.5;
+        Hf          2.544e+06;
     }
     transport
     {
@@ -71,4 +71,27 @@ mixture // air at room temperature (293 K)
     }
 }
 
+fuel
+{
+    specie
+    {
+        nMoles      1;
+        molWeight   16.0428;
+    }
+    thermodynamics      // janaf thermodynamics
+    {
+        Tlow        200;
+        Thigh       6000;
+        Tcommon     1000;
+        highCpCoeffs    (1.63543 0.0100844 -3.36924e-06 5.34973e-10
+                         -3.15528e-14 -10005.6 9.9937);
+        lowCpCoeffs     (5.14988 -0.013671 4.91801e-05 -4.84744e-08
+                         1.66694e-11 -10246.6 -4.64132);
+    }
+    tranport            // sutherland transport
+    {
+        As          1.67212e-06;
+        Ts          170.672;
+    }
+}
 // ************************************************************************* //
