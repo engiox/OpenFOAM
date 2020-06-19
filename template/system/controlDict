@@ -40,8 +40,9 @@ writeControl
     //	clockTime;	    	// every "writeInterval" seconds of real time
 writeInterval   0.02;
 purgeWrite      0;		// number of time directories to keep
-writeFormat     ascii;
-	     // binary;
+writeFormat
+        ascii;
+     // binary;
 writePrecision  7;	// 6 by default
 writeCompression no;	// on/off, yes/no, true/false
 timeFormat
