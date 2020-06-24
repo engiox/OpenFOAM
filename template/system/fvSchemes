@@ -26,27 +26,49 @@ ddtSchemes
                 /// CoEuler;            // Courant# limited 1st order implicit/explicit, steady-state
                 /// SLTS;               // Stabilised local time-step 1st order implicit/explicit, steady-state
                 /// bounded;            // Bounded form of the selected ddt scheme
-}
-
-gradSchemes
-{
-    default         Gauss linear;
-}
-
-divSchemes
-{
-    default         none;
-    div(phi,U)      Gauss limitedLinearV 1;
-}
-
-laplacianSchemes
-{
-    default         Gauss linear corrected;
+    // ddt(Q)       backward;
 }
 
 interpolationSchemes
 {
     default         linear;
+    // <equation term> <interpolation scheme>;
+    ///      <interpolation scheme> : linear, cubic, pointLinear, upwind, linearUpwind, limitedLinear,
+    ///                               vanLeer, vanLeerV, MUSCL, limitedCubic, SFCD, Gamma...
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+    // grad(Q)      <optional limiter> <gradient scheme> <interpolation scheme> <optional limiter k:0..1>;
+                //  <optional limiter> : cellMDLimited - celllLimited - faceMDLimited - faceLimited
+                //                       least dissipation <==> most dissipation
+                //         <limiter k> : 0 (no limit, accuracy) <==> 1 (full limit, stability)
+                //  <gradient scheme> : Gauss <interpolation scheme>;
+                //                      leastSquares;
+                ///                     pointCellsLeastSquares;
+                ///                     edgeCellsLeastSquares;
+                ///                     fourth;
+}
+
+divSchemes
+{
+    default         none;
+                //  [bounded] Gauss <interpolationScheme>
+                //          : Gauss scheme is the ONLY choice of discretization...
+                //          : "bounded" form for STEADY STATE
+    div(phi,U)      Gauss limitedLinearV 1;
+                //  linear : 2nd order, unbounded
+                //  linearUpwind : 2nd order, unbounded(much less), requires "grad(U)"
+                //  LUST : blended 75% "linear" / 25% "linearUpwind", requires "grad(U)"
+                //  limitedLinear [0..1] : 1st/2nd order, 0 (linear) <==> 1 (limiting upwind)
+                //  upwind : 1st order, bounded, generally too inaccurate to be recommended
+                //  "V-schemes" : more stable / less accurate
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
 }
 
 snGradSchemes
