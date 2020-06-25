@@ -1,0 +1,30 @@
+    272 {
+    272 }
+      2     default         Gauss cubic;
+    231     default         Gauss linear;
+      4     default         leastSquares;
+     20     default         none;
+      2     grad(alpha)     Gauss linear;
+      1     grad(D)         leastSquares;
+      2     grad(epsilon)   cellLimited Gauss linear 1;
+      2     grad(gamma)     Gauss linear;
+      5     grad(k)         cellLimited Gauss linear 1;
+      4     grad(nHat)      Gauss linear;
+      2     grad(nuTilda)   cellLimited Gauss linear 1;
+      4     grad(omega)     cellLimited Gauss linear 1;
+     13     grad(p)         Gauss linear;
+      1     grad(p)         leastSquares;
+      4     grad(pL)        Gauss linear;
+      1     grad(radius)    Gauss linear;
+    272 gradSchemes
+      4     grad(sigmaf)    Gauss linear;
+      1     grad(T)         Gauss linear;
+      1     grad(T)         leastSquares;
+     17     grad(U)         cellLimited Gauss linear 1;
+      6     grad(U)         Gauss linear;
+      1     grad(V)         Gauss linear;
+     10     limited         cellLimited Gauss linear 1;
+      4     limitedGrad     cellLimited Gauss linear 1;
+      4     snGradCorr(deltaf) Gauss linear;
+      4     snGradCorr(pp)  Gauss linear;
+      4     snGradCorr(pu)  Gauss linear;
