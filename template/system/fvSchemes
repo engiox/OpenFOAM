@@ -23,7 +23,7 @@ ddtSchemes
                 //  backward;           // transient, 2nd order implicit, potentially unbounded
                     // ::: ACCURATE / OSCILLATORY
                 //  CrankNicolson 0.9;  // transient, 2nd order implicit, bounded, off-centering coeff
-                                        // psi = 1 : pure CrankNicolson, psi = 0 : Euler
+                                        // psi = 1 : pure CrankNicolson, psi = 0 : Euler, psi = 0.9 typ.
                 /// localEuler;         // local time-step 1st order implicit/explicit, STEADY-STATE
                 /// CoEuler;            // Courant# limited 1st order implicit/explicit, STEADY-STATE
                 /// SLTS;               // Stabilised local time-step 1st order implicit/explicit, STEADY-STATE
@@ -99,13 +99,19 @@ divSchemes
 laplacianSchemes
 {
     default         Gauss linear corrected;
+    //          Gauss <interpolationScheme> <snGradScheme>
 }
 
 snGradSchemes
 {
     default         corrected;                  // a > 70', apply "limited" scheme
-                //  limited corrected 0.33;     // 0 : uncorrected, more stable
-                //  limited corrected 0.5;      // 1 : corrected,   more accurate
+                //  limited <psi>
+                //     <psi> =  1    : non-orthogonality < 70'
+                //     <psi> = 0.5   : 70' < non-orthogonality < 85'
+                //     <psi> = 0.333 : non-orthogonality > 85'
+                //                     increase non-ortho corrections & GET A BETTER MESH !!!
+                //     limited corrected 0.33;     // 0 : uncorrected, more stable
+                //     limited corrected 0.5;      // 1 : corrected,   more accurate
                 //  uncorrected;                //  for low non-orthogonality mesh, a < 5'
                 //  orthogonal;                 //  for low non-orthogonality mesh, a < 5'
 
