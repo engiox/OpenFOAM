@@ -40,6 +40,7 @@ interpolationSchemes
 gradSchemes
 {
     default         Gauss linear;
+    grad(U)         cellLimited Gauss linear 1;     // improve boundedness & stability for poorer mesh
     // grad(Q)      <optional limiter> <gradient scheme> <interpolation scheme> <optional limiter k:0..1>;
                 //  <optional limiter> : cellMDLimited - celllLimited - faceMDLimited - faceLimited
                 //                       least dissipation <==> most dissipation
