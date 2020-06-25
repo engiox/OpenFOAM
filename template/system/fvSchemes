@@ -19,7 +19,9 @@ ddtSchemes
 {
     default     //  steadyState;        // sets time derivatives to zero, STEADY-STATE
                     Euler;              // transient, 1st order implicit, bounded
+                    // :::   STABLE / DIFFUSIVE
                 //  backward;           // transient, 2nd order implicit, potentially unbounded
+                    // ::: ACCURATE / OSCILLATORY
                 //  CrankNicolson 0.9;  // transient, 2nd order implicit, bounded, off-centering coeff
                                         // psi = 1 : pure CrankNicolson, psi = 0 : Euler
                 /// localEuler;         // local time-step 1st order implicit/explicit, STEADY-STATE
@@ -39,7 +41,10 @@ interpolationSchemes
 
 gradSchemes
 {
-    default         Gauss linear;
+    default         Gauss linear;                       // ACCURATE / OSCILLATORY
+                //  cellLimited Gauss linear 0.5;       // ALL-AROUND
+                //  cellLimited Gauss linear 1;         // STABLE / DIFFUSIVE
+                
     grad(U)         cellLimited Gauss linear 1;     // improve boundedness & stability for poorer mesh
     // grad(Q)      <optional limiter> <gradient scheme> <interpolation scheme> <optional limiter k:0..1>;
                 //  <optional limiter> : cellMDLimited - celllLimited - faceMDLimited - faceLimited
@@ -56,15 +61,39 @@ divSchemes
 {
     default         none;
                 //  [bounded] Gauss <interpolationScheme>
-                //          : Gauss scheme is the ONLY choice of discretization...
-                //          : "bounded" form for STEADY-STATE
-    div(phi,U)      Gauss limitedLinearV 1;
-                //  linear : 2nd order, unbounded
-                //  linearUpwind : 2nd order, unbounded(much less), requires "grad(U)"
-                //  LUST : blended 75% "linear" / 25% "linearUpwind", requires "grad(U)"
-                //  limitedLinear [0..1] : 1st/2nd order, 0 (linear) <==> 1 (limiting upwind)
-                //  upwind : 1st order, bounded, generally too inaccurate to be recommended
-                //  "V-schemes" : more stable / less accurate
+                //    : Gauss scheme is the ONLY choice of discretization...
+                //    : "bounded" form for STEADY-STATE
+                //  <interpolationScheme>
+                //      linear : 2nd order, unbounded
+                //      linearUpwind : 2nd order, unbounded(much less),   REQUIRES "grad(U)"
+                //      LUST : blended 75% "linear" / 25% "linearUpwind", REQUIRES "grad(U)"
+                //      limitedLinear [0..1] : 1st/2nd order, 0 (linear) <==> 1 (limiting upwind)
+                //      upwind : 1st order, bounded, generally too inaccurate to be recommended
+                //      "V-schemes" : more stable / less accurate
+    div(U)          Gauss linear;               // non-advective terms
+    div(phi,U)      Gauss limitedLinearV 1;     // advective terms
+                // "div\(phi.*,U.*\)"   Gauss limitedLinearV 1; // REGEX form
+                //  Gauss linear;                   // ACCURATE / OSCILLATORY
+                //  Gauss linearUpwindV grad(U);    // ALL-AROUND
+                //  Gauss upwind;                   // STABLE / DIFFUSIVE 
+    div(phi,omega)
+                    Gauss limitedLinear 1;          // ACCURATE / OSCILLATORY
+                //  Gauss linearUpwind default;     // ALL-AROUND:w
+                //  Gasuu upwind;                   // STABLE / DIFFUSIVE
+    div(phi,k)  
+                //  Gauss limitedLinear 1;          // ACCURATE/ OSCILLATORY
+                    Gauss linearUpwind default;     // ALL-AROUND
+                //  Gauss upwind;                   // STABLE / DIFFUSIVE
+    div(phi,K)      Gauss limitedLinear 1;      // Gauss limitedLinear 1;
+    div(phi,e)      Gauss limitedLinear 1;      // advection of scalar fields ==> BOUNDEDNESS IMPORTANT !!
+                //  bounded Gauss upwind;
+                //  Gauss vanLeer;              // less strong limiting than "limitedLinear"
+    div(phi,alpha)  Gauss vanLeer;
+    div(phi,epsilon)                        Gauss upwind;
+    div(phirb,alpha)                        Gauss linear;
+    div((nuEff*dev(T(grad(U)))))            Gauss linear;                    
+    div(((rho*nuEff)*dev2(T(grad(U)))))     Gauss linear;
+    div((nuEff*dev2(T(grad(U)))))           Gauss linear;
 }
 
 laplacianSchemes
@@ -74,7 +103,12 @@ laplacianSchemes
 
 snGradSchemes
 {
-    default         corrected;
+    default         corrected;                  // a > 70', apply "limited" scheme
+                //  limited corrected 0.33;     // 0 : uncorrected, more stable
+                //  limited corrected 0.5;      // 1 : corrected,   more accurate
+                //  uncorrected;                //  for low non-orthogonality mesh, a < 5'
+                //  orthogonal;                 //  for low non-orthogonality mesh, a < 5'
+
 }
 
 

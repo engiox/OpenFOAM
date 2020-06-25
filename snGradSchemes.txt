@@ -1,0 +1,14 @@
+    260 {
+    260 }
+      4     bounded         uncorrected;
+    155     default         corrected;
+     11     default         limited corrected 0.33;
+      2     default         limited corrected 0.5;
+     13     default         none;
+     19     default         orthogonal;
+     48     default         uncorrected;
+      1     snGrad(deltaf)  orthogonal;
+      3     snGrad(deltaf)  uncorrected;
+      1     snGrad(p)       orthogonal;
+      3     snGrad(p)       uncorrected;
+    260 snGradSchemes

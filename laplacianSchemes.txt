@@ -1,0 +1,32 @@
+    272 {
+    272 }
+      4     bounded         Gauss linear uncorrected;
+    138     default         Gauss linear corrected;
+     11     default         Gauss linear limited corrected 0.33;
+      5     default         Gauss linear limited corrected 0.5;
+     19     default         Gauss linear orthogonal;
+     47     default         Gauss linear uncorrected;
+     37     default         none;
+      4     laplacian(alpha,h) Gauss linear corrected;
+      1     laplacian(alpha,h) Gauss linear uncorrected;
+      1     laplacian(DD,D) Gauss linear corrected;
+      1     laplacian(deltaCoeff,deltaf) Gauss linear orthogonal;
+      3     laplacian(deltaCoeff,deltaf) Gauss linear uncorrected;
+      3     laplacian(DepsilonEff,epsilon) Gauss linear corrected;
+      2     laplacian(diffusivity,cellMotionU) Gauss linear uncorrected;
+      3     laplacian(DkEff,k) Gauss linear corrected;
+      3     laplacian(DnuTildaEff,nuTilda) Gauss linear corrected;
+      1     laplacian(DomegaEff,omega) Gauss linear corrected;
+      3     laplacian(DREff,R) Gauss linear corrected;
+      3     laplacian(DT,T) Gauss linear corrected;
+      1     laplacian(DV,V) Gauss linear corrected;
+      1     laplacian(kappa,T) Gauss harmonic corrected;
+      1     laplacian(kappa,T) Gauss harmonic uncorrected;
+      2     laplacian(nn)   Gauss linear corrected;
+      3     laplacian(nuEff,U) Gauss linear corrected;
+      1     laplacian(phi)  Gauss linear corrected;
+    272 laplacianSchemes
+      1     laplacian(sigmaf,deltaf) Gauss linear orthogonal;
+      3     laplacian(sigmaf,deltaf) Gauss linear uncorrected;
+      1     laplacian(thermo:alpha,h) Gauss linear corrected;
+      1     laplacian(thermo:alpha,h) Gauss linear uncorrected;
