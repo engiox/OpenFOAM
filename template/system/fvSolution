@@ -17,6 +17,13 @@ FoamFile
 
 solvers
 {
+    // ****** Smooth Solver ******
+    // - symmetric / asymmetric matrices
+    // - run-time selectable smoother
+    //      solver      smooth;
+    //      smoother    <smoother>;
+    //      relTol      <relative tolerance>
+    //      tolerance   <absolute tolerance>:
     p
     {
         solver          PCG;
