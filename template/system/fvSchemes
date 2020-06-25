@@ -99,6 +99,7 @@ divSchemes
 laplacianSchemes
 {
     default         Gauss linear corrected;
+    //          Gauss <interpolationScheme> <snGradScheme>
 }
 
 snGradSchemes
