@@ -94,6 +94,10 @@ divSchemes
     div((nuEff*dev(T(grad(U)))))            Gauss linear;                    
     div(((rho*nuEff)*dev2(T(grad(U)))))     Gauss linear;
     div((nuEff*dev2(T(grad(U)))))           Gauss linear;
+    div(sigmaD)                             Gauss linear;
+   "div\(phi,(k|omega)\)                    Gauss upwind;
+
+   "div(\(phi.*,kappai.*\)"                 Gauss vanLeer;
 }
 
 laplacianSchemes
@@ -105,7 +109,7 @@ laplacianSchemes
 snGradSchemes
 {
     default         corrected;                  // a > 70', apply "limited" scheme
-                //  limited <psi>
+                //  limited corrected <psi>
                 //     <psi> =  1    : non-orthogonality < 70'
                 //     <psi> = 0.5   : 70' < non-orthogonality < 85'
                 //     <psi> = 0.333 : non-orthogonality > 85'
