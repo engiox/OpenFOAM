@@ -17,7 +17,7 @@ FoamFile
 
 solvers
 {
-    // ****** Smooth Solver ******
+    // ************ Smooth Solver ************
     // - symmetric / asymmetric matrices
     // - run-time selectable smoother
     //      solver      smooth;
