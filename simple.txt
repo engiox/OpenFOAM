@@ -1,0 +1,53 @@
+     38 SIMPLE
+     38 }
+     38 {
+     33     nNonOrthogonalCorrectors 0;
+     22     residualControl
+     22     }
+     22     {
+     14         U               0.0001;
+     12         "(k|epsilon|omega)" 0.001;
+     10     pRefValue       0;
+     10     pRefCell        0;
+      6         U               0.001;
+      6     consistent      yes;
+      5         p_rgh           0.01;
+      5         p               0.01;
+      5     nUCorrectors    2;
+      5         e               0.001;
+      4     pMinFactor      0.1;
+      4     pMaxFactor      2;
+      4         p               0.001;
+      4         p               0.0001;
+      3     pMaxFactor      1.5;
+      3         h               0.001;
+      2     pMinFactor      0.5;
+      2         p               1e-05;
+      2     nNonOrthogonalCorrectors 2;
+      2     nNonOrthCorr    0;
+      2     momentumPredictor no;
+      2         "(k|omega|e)"   0.0001;
+      2         h               0.0001;
+      2         G               0.001;
+      1         U               1e-06;
+      1         U               1e-05;
+      1     transonic       yes;
+      1     transonic       no;
+      1     rhoMin          0.1;
+      1     rhoMax          1.5;
+      1         p_rgh           0.001;
+      1         p_rgh           0.0001;
+      1     pMinFactor      0.4;
+      1         nuTilda         1e-05;
+      1     nCorrectors     2;
+      1     momentumPredictor yes;
+      1         "(k|omega|gammaInt|ReThetat)" 0.0001;
+      1         "(k|omega|epsilon|e|h)" 0.001;
+      1         "(k|omega|epsilon)" 0.0001;
+      1         "(k|epsilon|omega|f|v2)" 0.001;
+      1         "(k|epsilon|omega)" 0.005;
+      1         "(k|epsilon)"   0.001;
+      1         "(k|epsilon)"   0.0001;
+      1         "ILambda.*"     0.001;
+      1         e               0.01;
+      1     consistent      no;

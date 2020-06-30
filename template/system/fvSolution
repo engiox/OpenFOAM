@@ -127,6 +127,37 @@ relaxationFactors
     }
 }
 
+// SIMPLEC : consistent SIMPLE
+// SIMPLE
+// {
+//     consistent       yes;
+//     ...
+// }
+// Only needs small under-relaxation for U & transport. No need for pressure
+// relaxationFactors { equations { U 0.9; ".*" 0.9; } }
+
+// SIMPLE : 1 nCorrectors, PISO : > 1 nCorrectors (typ. <= 4)
+// nNonOrthogonalCorrectors : 0 for orthogonal, ~20 for most non-ortho mesh
+
+// SIMPLE
+// residualControl
+// {
+//     p                   1e-2;
+//     "(Ux Uy)"           1e-4;
+//     "(k|epsilon|omega)" 1e-4;
+// }
+
+// PIMPLE
+// nOuterCorrectors 50;
+// residualControl
+// {
+//     "(U|k|epsilon|omega)"
+//     {
+//         relTol      0;
+//         tolerance   1e-4;
+//     }
+// }
+
 PISO
 {
     nCorrectors     2;

@@ -1,0 +1,92 @@
+    172 }
+    172 {
+    171 PIMPLE
+    156     nNonOrthogonalCorrectors 0;
+     67     nCorrectors     2;
+     61     nCorrectors     1;
+     55     nOuterCorrectors 1;
+     45     momentumPredictor yes;
+     42     momentumPredictor no;
+     36     nOuterCorrectors 3;
+     29     pRefValue       0;
+     27     pRefCell        0;
+     27     nCorrectors     3;
+     14     nOuterCorrectors 2;
+     14     correctPhi      yes;
+     11     faceMomentum    yes;
+      9     correctPhi      no;
+      8     transonic       no;
+      8     pRefValue       100000;
+      7     transonic       yes;
+      7     nNonOrthogonalCorrectors 1;
+      7     nEnergyCorrectors 2;
+      6     rDeltaTDampingCoeff 1;
+      5     pRefPoint       ( 0 0 0.15 );
+      5     pMaxFactor      1.5;
+      5     alphaTemp       0.05;
+      4     turbOnFinalIterOnly no;
+      4     pMinFactor      0.9;
+      4     nOuterCorrectors 5;
+      4     nHydrostaticCorrectors 5;
+      4     maxDeltaT       1;
+      4     maxCo           1;
+      4     hydrostaticInitialization yes;
+      3     rDeltaTSmoothingCoeff 1;
+      3     pMaxFactor      2;
+      3     nOuterCorrectors 6;
+      3     nOuterCorrectors 15;
+      3     moveMeshOuterCorrectors yes;
+      3     momentumPredictor off;
+      3     maxDeltaT       0.0001;
+      3     }
+      3     {
+      2     Yref
+      2     turbOnFinalIterOnly yes;
+      2     rDeltaTSmoothingCoeff 0.1;
+      2     rDeltaTSmoothingCoeff 0.05;
+      2     pMinFactor      0.5;
+      2     pMinFactor      0.1;
+      2     pMin            80000;
+      2     pMax            120000;
+      2         O2              0.1;
+      2     nAlphaSubCycles 2;
+      2     nAlphaCorr      1;
+      2     maxDeltaT       0.01;
+      2     maxCo           0.25;
+      2         CH4             0.1;
+      2     cAlpha          1;
+      2     alphaY          0.05;
+      1         "(U|k|epsilon)"
+      1             tolerance       0.0001;
+      1     solvePrimaryRegion no;
+      1     simpleRho       yes;
+      1     rhoMin          0.1;
+      1     rhoMax          100;
+      1             relTol          0;
+      1     rDeltaTSmoothingCoeff 0.5;
+      1     rDeltaTSmoothingCoeff 0.025;
+      1     rDeltaTDampingCoeff 0.5;
+      1     pRefPoint       ( 0.51 0.51 0.51 );
+      1     pRefPoint       ( 0.1 0.1 1 );
+      1     pRefPoint       ( 0.0013 0.0017 0.0017 );
+      1     pRefPoint       ( 0 0 0 );
+      1     pRefCell        1001;
+      1     pMinFactor      0.8;
+      1     pMaxFactor      1.2;
+      1 "(PIMPLE|PISO)"
+      1     partialElimination true;
+      1     outerCorrectorResidualControl
+      1     nOuterCorrectors 50;
+      1     nOuterCorrectors 4;
+      1     nCorrectors     4;
+      1     nAlphaSweepIter 0;
+      1     nAlphaSpreadIter 0;
+      1     maxCo           2.5;
+      1     maxCo           10;
+      1     maxCo           0.2;
+      1     maxAlphaCo      5;
+      1     consistent      yes;
+      1     consistent      no;
+      1     alphaTemp       1;
+      1         }
+      1         {
