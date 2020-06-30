@@ -101,14 +101,29 @@ solvers
 
 relaxationFactors
 {
+    // improve stability of computation, particularly STEADY-STATE problem
+    // Q^n = Q^o + alpha ( Q - Q^o ),  0 < alpha <= 1
+    // alpha = 0 : solution does not change with successive iterations
+    // alpha = 1 : matrix forced to become diagonally equal
+    // alpha increase ==> under-relaxation increase
     fields
     {
-        p               0.3;
-        rho             1;
-        p_rgh           0.7;
+     // p               0.3;
+     // rho             1;
+     // p_rgh           0.7;
+     // iDmdt           0.1;
+     // alpha           0.1;
     }
     equations
     {
+     // U               0.7;
+     // k               0.7;
+     // epsilon         0.7;
+     // nuTilda         0.7;
+     // R               0.7;
+     // h               0.7;
+     // e               0.7;
+     // ".*"            1;          // pimpleFoam, TRANSIENT CASE
     }
 }
 
