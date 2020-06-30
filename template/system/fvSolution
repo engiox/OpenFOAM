@@ -73,7 +73,7 @@ solvers
         solver          GAMG;       // GAMG 67, PCG 25, smoothSolver 5...
      // preconditioner  DIC;        // DIC 25, DILU 2
         smoother        GaussSeidel;    // GaussSeidel 53, DICGaussSeidel 7...
-        tolerance       1e-06;
+        tolerance       1e-06;      // 1e-06 ~ 1e-08 (61, 13 13)
         relTol          0.01;       // 0 to converge to solver tolerance
         maxIter         1000;       // default value, optional
     }
@@ -86,9 +86,15 @@ solvers
 
     U
     {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
-        tolerance       1e-05;
+        solver          smoothSolver;   // smoothSolver 154, PBiCGStab 49...
+     // preconditioner  DILU;           // DILU 50, DIC 3
+        smoother        symGaussSeidel; // symGaussSeidel 113, GaussSeidel 42..
+        tolerance       1e-06;          // 1e-05 ~ 1e-08 (62,, 78, 28, 22)
+        relTol          0.1;            // 0.1 : 107, 0 : 88, 0.01 : 12
+    }
+    UFinal
+    {
+        $U;
         relTol          0;
     }
 }
@@ -97,6 +103,9 @@ relaxationFactors
 {
     fields
     {
+        p               0.3;
+        rho             1;
+        p_rgh           0.7;
     }
     equations
     {
