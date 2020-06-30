@@ -92,6 +92,16 @@ solvers
     }
 }
 
+relaxationFactors
+{
+    fields
+    {
+    }
+    equations
+    {
+    }
+}
+
 PISO
 {
     nCorrectors     2;
