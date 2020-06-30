@@ -70,11 +70,12 @@ solvers
     // advective derivatives ==> asymmetry
     p
     {
-        solver          PCG;
-        preconditioner  DIC;
+        solver          GAMG;       // GAMG 67, PCG 25, smoothSolver 5...
+     // preconditioner  DIC;        // DIC 25, DILU 2
+        smoother        GaussSeidel;    // GaussSeidel 53, DICGaussSeidel 7...
         tolerance       1e-06;
-        relTol          0.05;       // 0 to converge to solver tolerance
-        maxiter         1000;       // default value, optional
+        relTol          0.01;       // 0 to converge to solver tolerance
+        maxIter         1000;       // default value, optional
     }
 
     pFinal
