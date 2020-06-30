@@ -29,6 +29,11 @@ ddtSchemes
                 /// SLTS;               // Stabilised local time-step 1st order implicit/explicit, STEADY-STATE
                 /// bounded;            // Bounded form of the selected ddt scheme
     // ddt(Q)       backward;
+// #ifeq ${FOAM_APPLICATION} simpleFoam
+//     default steadyState;
+// #else
+//     default Euler;
+// #endif
 }
 
 interpolationSchemes

@@ -43,6 +43,26 @@ FoamFile
 // nonBlockingGaussSeidel    |  O  |  O  |                                    //
 // symGaussSeidel            |  O  |  O  |                                    //
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*---------------------------------------------------------------------------*\
+| GAMG Optional Controls                                                      |
+|// Agglomeration                                                             |
+|   cacheAgglomeration          true;                                         |
+|   nCellsInCoarsestLevel       10;                                           |
+|   directSolveCoarsest         false;                                        |
+|   agglomeration               <GAMGAgglomeration>;  ???                     |
+|   processorAgglomerator       <GAMGAgglomeration>;  ???                     |
+|   mergeLevels                 1;                                            |
+|// Solver                                                                    |
+|   nPreSweeps                  0;                                            |
+|   preSweepsLevelMultiplier    1;                                            |
+|   maxPreSweeps                4;                                            |
+|   nPostSweeps                 2;                                            |
+|   postSweepsLevelMultiplier   1;                                            | 
+|   maxPostSweeps               4;                                            |
+|   nFinestSweeps               2;                                            |
+|   interpolateCorrection       false;                                        |
+|   scaleCorrection             yes;     // YES : symmetric, NO : asymmetic   |
+\*---------------------------------------------------------------------------*/
 
 solvers
 {
