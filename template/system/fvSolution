@@ -49,8 +49,7 @@ FoamFile
 |   cacheAgglomeration          true;                                         |
 |   nCellsInCoarsestLevel       10;                                           |
 |   directSolveCoarsest         false;                                        |
-|   agglomeration               <GAMGAgglomeration>;  ???                     |
-|   processorAgglomerator       <GAMGAgglomeration>;  ???                     |
+|   agglomerator                faceAreaPair;                                 |
 |   mergeLevels                 1;                                            |
 |// Solver                                                                    |
 |   nPreSweeps                  0;                                            |
@@ -84,7 +83,7 @@ solvers
         maxIter         100;        // OPTIONAL, default value : 1000
     }
 
-    pFinal
+    pFinal              // PISO or PIMPLE option
     {
         $p;
         relTol          0.0;
@@ -185,8 +184,7 @@ PIMPLE
 
 SIMPLE
 {
-    consistent                  yes
-        ;
+    consistent                  yes;
     nNonOrthogonalCorrectors    0;
     momentumPredictor           off;
     pRefValue                   0;
@@ -194,6 +192,7 @@ SIMPLE
 
     residualControl
     {
+        p                       1e-4;
         U                       0.0001;
         "(k|epsilon|omega)"     0.001;
     }
