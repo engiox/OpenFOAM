@@ -66,8 +66,13 @@ FoamFile
 
 solvers
 {
-    // time derivatives & Laplacian terms ==> symmetry
-    // advective derivatives ==> asymmetry
+    // time derivatives & Laplacian terms (p...) ==> symmetry
+    //                  ==> GAMG
+    //                  ==> PCG (GAMG too slow / unstable, with 1000+ cores)
+    // advective derivatives (U, k, omega, epsilon, T...) ==> asymmetry
+    //                  ==> smoothSolver w/ GaussSeidel
+    //                  ==> PBiCGStab w/ DILU : faster in general
+    //                  ==> inexpensive, use tight tolerance(1e-08)
     p
     {
         solver          GAMG;       // GAMG 67, PCG 25, smoothSolver 5...
