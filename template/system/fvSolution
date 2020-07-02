@@ -80,13 +80,14 @@ solvers
         smoother        GaussSeidel;    // GaussSeidel 53, DICGaussSeidel 7...
         tolerance       1e-06;      // 1e-06 ~ 1e-08 (61, 13 13)
         relTol          0.01;       // 0 to converge to solver tolerance
-        maxIter         1000;       // default value, optional
+        minIter         3;          // OPTIONAL, defualt value : 0
+        maxIter         100;        // OPTIONAL, default value : 1000
     }
 
     pFinal
     {
         $p;
-        relTol          0;
+        relTol          0.0;
     }
 
     U
@@ -94,13 +95,13 @@ solvers
         solver          smoothSolver;   // smoothSolver 154, PBiCGStab 49...
      // preconditioner  DILU;           // DILU 50, DIC 3
         smoother        symGaussSeidel; // symGaussSeidel 113, GaussSeidel 42..
-        tolerance       1e-06;          // 1e-05 ~ 1e-08 (62,, 78, 28, 22)
-        relTol          0.1;            // 0.1 : 107, 0 : 88, 0.01 : 12
+        tolerance       1e-08;          // 1e-05 ~ 1e-08 (62,, 78, 28, 22)
+        relTol          0.001;            // 0.1 : 107, 0 : 88, 0.01 : 12
     }
     UFinal
     {
         $U;
-        relTol          0;
+        relTol          0.0;
     }
 }
 
