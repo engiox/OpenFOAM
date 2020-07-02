@@ -104,34 +104,6 @@ solvers
     }
 }
 
-relaxationFactors
-{
-    // improve stability of computation, particularly STEADY-STATE problem
-    // Q^n = Q^o + alpha ( Q - Q^o ),  0 < alpha <= 1
-    // alpha = 0 : solution does not change with successive iterations
-    // alpha = 1 : matrix forced to become diagonally equal
-    // alpha increase ==> under-relaxation increase
-    fields
-    {
-     // p               0.3;
-     // rho             1;
-     // p_rgh           0.7;
-     // iDmdt           0.1;
-     // alpha           0.1;
-    }
-    equations
-    {
-     // U               0.7;
-     // k               0.7;
-     // epsilon         0.7;
-     // nuTilda         0.7;
-     // R               0.7;
-     // h               0.7;
-     // e               0.7;
-     // ".*"            1;          // pimpleFoam, TRANSIENT CASE
-    }
-}
-
 // SIMPLEC : consistent SIMPLE
 // SIMPLE
 // {
@@ -165,9 +137,10 @@ relaxationFactors
 
 PISO
 {
-    nCorrectors                 2;
-    nNonOrthogonalCorrectors    0;
-    momentumPredictor           yes;
+    nCorrectors                 2;      // >=1, increase for accu' & stab'
+    nNonOrthogonalCorrectors    1;
+    momentumPredictor           yes;    // enable by default for most solvers
+                                        // if enabled, requires ".*Final"
     pRefValue                   0;
     pRefCell                    0;
 }
@@ -175,8 +148,8 @@ PISO
 PIMPLE
 {
     nCorrectors                 2;
-    nNonOrthogonalCorrectors    0;
-    nOuterCorrectors            1;
+    nNonOrthogonalCorrectors    1;
+    nOuterCorrectors            1;      // nOuterCorrectors=1 ==> PISO
     momentumPredictor           yes;
     pRefValue                   0;      // 100,000;
     pRefCell                    0;      // pRefpoint    (0 0 0.15);
@@ -184,8 +157,8 @@ PIMPLE
 
 SIMPLE
 {
-    consistent                  yes;
-    nNonOrthogonalCorrectors    0;
+    consistent                  yes;    // no; (default), need less relaxation
+    nNonOrthogonalCorrectors    1;      // >=1 if non-ortho, 0 if ortho
     momentumPredictor           off;
     pRefValue                   0;
     pRefCell                    0;
@@ -198,5 +171,34 @@ SIMPLE
     }
 }
 
+relaxationFactors
+{
+    // improve stability of computation, particularly STEADY-STATE problem
+    // Q^n = Q^o + alpha ( Q - Q^o ),  0 < alpha <= 1
+    // alpha = 0 : solution does not change with successive iterations
+    // alpha = 1 : matrix forced to become diagonally equal
+    // alpha increase ==> under-relaxation increase
+    // for complex physics, start 0.3 ==> increase to 0.7
+    fields
+    {
+     // p               0.3;    // SIMPLE : 0.3, SIMPLEC : 0.7
+     // rho             1;
+     // p_rgh           0.7;
+     // iDmdt           0.1;
+     // alpha           0.1;
+    }
+    equations
+    {
+     // U               0.7;    // SIMPLE : 0.7, SIMPLEC : 0.9
+     // k               0.7;    // SIMPLE : 0.7, SIMPLEC : 0.9
+     // omega           0.7;    // SIMPLE : 0.7, SIMPLEC : 0.9
+     // epsilon         0.7;    // SIMPLE : 0.7, SIMPLEC : 0.9
+     // nuTilda         0.7;
+     // R               0.7;
+     // h               0.7;
+     // e               0.7;
+     // ".*"            1;          // pimpleFoam, TRANSIENT CASE
+    }
+}
 
 // ************************************************************************* //
