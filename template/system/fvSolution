@@ -137,7 +137,7 @@ solvers
 
 PISO
 {
-    nCorrectors                 2;      // >=1, increase for accu' & stab'
+    nCorrectors                 3;      // >=1, increase for accu' & stab'
     nNonOrthogonalCorrectors    1;
     momentumPredictor           yes;    // enable by default for most solvers
                                         // if enabled, requires ".*Final"
@@ -147,7 +147,7 @@ PISO
 
 PIMPLE
 {
-    nCorrectors                 2;
+    nCorrectors                 3;
     nNonOrthogonalCorrectors    1;
     nOuterCorrectors            1;      // nOuterCorrectors=1 ==> PISO
     momentumPredictor           yes;
@@ -163,8 +163,8 @@ SIMPLE
     pRefValue                   0;
     pRefCell                    0;
 
-    residualControl
-    {
+    residualControl                     // NO residualControl ==> max iter.
+    {                                   //                        "endTime"
         p                       1e-4;
         U                       0.0001;
         "(k|epsilon|omega)"     0.001;
@@ -181,7 +181,7 @@ relaxationFactors
     // for complex physics, start 0.3 ==> increase to 0.7
     fields
     {
-     // p               0.3;    // SIMPLE : 0.3, SIMPLEC : 0.7
+     // p               0.3;    // SIMPLE : 0.3, SIMPLEC : 0.9 (1.0)
      // rho             1;
      // p_rgh           0.7;
      // iDmdt           0.1;
