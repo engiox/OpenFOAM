@@ -14,37 +14,36 @@ FoamFile
     object      fvSolution;
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \
-// Solver                    | Sym | Asym| Remarks                            //
-//----------------------------------------------------------------------------//
-// PCG                       |  O  |  X  | Preconditioner                     //
-// PBiCG                     |  X  |  O  | Preconditioner                     //
-// PBiCGStab                 |  O  |  O  | Preconditioner                     //
-// GAMG                      |  O  |  O  | Smoother                           //
-// smoothSolver              |  O  |  O  | Smoother                           //
-//============================================================================//
-// Preconditioner            | Sym | Asym| Remarks                            //
-//----------------------------------------------------------------------------//
-// DIC                       |  O  |  X  |                                    //
-// FDIC                      |  O  |  X  |                                    //
-// DILU                      |  X  |  O  |                                    //
-// GAMG                      |  O  |  O  |                                    //
-// diagonal                  |  O  |  O  |                                    //
-// none                      |  O  |  O  |                                    //
-//============================================================================//
-// Smoother                  | Sym | Asym| Remarks                            //
-//----------------------------------------------------------------------------//
-// DIC                       |  O  |  X  |                                    //
-// DICGaussSeidel            |  O  |  X  |                                    //
-// FDIC                      |  O  |  X  |                                    //
-// DILU                      |  X  |  O  |                                    //
-// DILUGaussSeidel           |  X  |  O  |                                    //
-// GaussSeidel               |  O  |  O  |                                    //
-// nonBlockingGaussSeidel    |  O  |  O  |                                    //
-// symGaussSeidel            |  O  |  O  |                                    //
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*---------------------------------------------------------------------------*\
-| GAMG Optional Controls                                                      |
+/*--- Solvers, Preconditioners, and Smoothers -------------------------------*\
+|  Solver                    | Sym | Asym| Remarks                            |
+| --------------------------------------------------------------------------- |
+|  PCG                       |  O  |  X  | Preconditioner                     |
+|  PBiCG                     |  X  |  O  | Preconditioner                     |
+|  PBiCGStab                 |  O  |  O  | Preconditioner                     |
+|  GAMG                      |  O  |  O  | Smoother                           |
+|  smoothSolver              |  O  |  O  | Smoother                           |
+| =========================================================================== |
+|  Preconditioner            | Sym | Asym| Remarks                            |
+| --------------------------------------------------------------------------- |
+|  DIC                       |  O  |  X  |                                    |
+|  FDIC                      |  O  |  X  |                                    |
+|  DILU                      |  X  |  O  |                                    |
+|  GAMG                      |  O  |  O  |                                    |
+|  diagonal                  |  O  |  O  |                                    |
+|  none                      |  O  |  O  |                                    |
+| =========================================================================== |
+|  Smoother                  | Sym | Asym| Remarks                            |
+| --------------------------------------------------------------------------- |
+|  DIC                       |  O  |  X  |                                    |
+|  DICGaussSeidel            |  O  |  X  |                                    |
+|  FDIC                      |  O  |  X  |                                    |
+|  DILU                      |  X  |  O  |                                    |
+|  DILUGaussSeidel           |  X  |  O  |                                    |
+|  GaussSeidel               |  O  |  O  |                                    |
+|  nonBlockingGaussSeidel    |  O  |  O  |                                    |
+|  symGaussSeidel            |  O  |  O  |                                    |
+\*---------------------------------------------------------------------------*/
+/*--- GAMG Optional Controls ------------------------------------------------*\
 |// Agglomeration                                                             |
 |   cacheAgglomeration          true;                                         |
 |   nCellsInCoarsestLevel       10;                                           |
