@@ -1,3 +1,5 @@
+find $FOAM_TUTORIALS -iname '*dict'
+
 blockMeshDict
 boxTurbDict
 collapseDict
