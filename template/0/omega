@@ -10,33 +10,37 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    location    "0";
-    object      k;
+    object      omega;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 /*--------------------------------*- C++ -*----------------------------------*\
-    k : turbulent kinetic energy
-    k = 3/2 * (U * I)^2
-        U : inlet velocity
-        I : turbulent intensity
-            1.0% (Low) ... 5.0% (Med) ... 10.0% (High)
+            rho         mut
+    omega = --- * k * ( --- )^-1
+            mu          mu
+
+        rho / mu = 1 / nu
+        k = 3/2 * (U * I)^2  : turbulent kinetic energy
+            U : inlet velocity
+            I : turbulent intensity
+                1.0% (Low) ... 5.0% (Med) ... 10.0% (High)
+        mut / mu : viscosity ratio
+                1 (Low) ... 10 (Med) ... 100 (High)
+
 \*---------------------------------------------------------------------------*/
 
-dimensions      [0 2 -2 0 0 0 0];
+#include        "include/initialConditions"
 
-internalField   uniform 0.06;
+dimensions      [0 0 -1 0 0 0 0];
+
+internalField   uniform $turbulentOmega;
 
 boundaryField
 {
     //- Set patchGroups for constraint patches
     #includeEtc "caseDicts/setConstraintTypes"
 
-    inlet
-    {
-        type            fixedValue;
-        value           $internalField;
-    }
+    #include "include/fixedInlet"
 
     outlet
     {
@@ -45,11 +49,19 @@ boundaryField
         value           $internalField;
     }
 
-    wall
+    lowerWall
     {
-        type            kqRWallFunction;
+        type            omegaWallFunction;
         value           $internalField;
     }
+
+    motorBikeGroup
+    {
+        type            omegaWallFunction;
+        value           $internalField;
+    }
+
+    #include "include/frontBackUpperPatches"
 }
 
 

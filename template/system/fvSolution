@@ -77,7 +77,7 @@ solvers
      // preconditioner  DIC;        // DIC 25, DILU 2
         smoother        GaussSeidel;    // GaussSeidel 53, DICGaussSeidel 7...
         tolerance       1e-06;      // 1e-06 ~ 1e-08 (61, 13 13)
-        relTol          0.01;       // 0 to converge to solver tolerance
+        relTol          1e-03;      // 0 to converge to solver tolerance
         minIter         3;          // OPTIONAL, defualt value : 0
         maxIter         100;        // OPTIONAL, default value : 1000
     }
