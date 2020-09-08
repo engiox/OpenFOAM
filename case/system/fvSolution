@@ -165,7 +165,7 @@ SIMPLE
     residualControl                     // NO residualControl ==> max iter.
     {                                   //                        "endTime"
         p                       1e-4;
-        U                       0.0001;
+        U                       1e-4;
         "(k|epsilon|omega)"     0.001;
     }
 }
