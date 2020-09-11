@@ -140,8 +140,8 @@ PISO
     nNonOrthogonalCorrectors    1;
     momentumPredictor           yes;    // enable by default for most solvers
                                         // if enabled, requires ".*Final"
-    pRefValue                   0;
-    pRefCell                    0;
+    pRefValue                   0;      // for INcompressible flow
+    pRefCell                    0;      // for INcompressible flow
 }
 
 PIMPLE
