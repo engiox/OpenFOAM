@@ -17,6 +17,13 @@ FoamFile
 
 /*--------------------------------*- C++ -*----------------------------------*\
     nut = k / omega    :    calculated value
+
+    Wall Functions - High RE
+        nut(-)WallFunction
+        nutUSpaldingWallFunction
+    Resolved BL - Low RE
+        nutUSpaldingWallFunction
+        fixedValue (0 or small number)
 \*---------------------------------------------------------------------------*/
 
 dimensions      [0 2 -1 0 0 0 0];

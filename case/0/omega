@@ -27,6 +27,12 @@ FoamFile
         mut / mu : viscosity ratio
                 1 (Low) ... 10 (Med) ... 100 (High)
 
+        Wall functions - High RE
+            omegaWallFunction (omega_wall = 10 * (6 * nu) / (beta * y^2)
+                              (beta = 0.075)
+        Resolved BL - Low RE
+            omegaWallFunctio
+            fixedValue (large number)
 \*---------------------------------------------------------------------------*/
 
 #include        "include/initialConditions"

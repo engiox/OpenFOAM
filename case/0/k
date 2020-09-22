@@ -21,6 +21,12 @@ FoamFile
         U : inlet velocity
         I : turbulent intensity
             1.0% (Low) ... 5.0% (Med) ... 10.0% (High)
+    Wall Functions - High RE
+        kqRWallFunction
+        kLowReWallFunction
+    Resolved BL - Low RE
+        kLowReWallFunction
+        fixedValue (0 or small number)
 \*---------------------------------------------------------------------------*/
 
 dimensions      [0 2 -2 0 0 0 0];

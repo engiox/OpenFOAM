@@ -15,6 +15,26 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+/*--------------------------------*- C++ -*----------------------------------*\
+    e : turbulent dissipation
+           Cmu * k^2
+    e = --------------- 
+         nu * (mut/mu)
+        
+        Cmu = 0.09
+        k        : turbulent kinetic energy
+        nu       : kinematic viscosity
+        mut / mu : viscosity ratio
+                1 (Low) ... 10 (Med) ... 100 (High)
+
+    Wall Functions - High RE
+        epsilonWallFunction
+    Resolved BL - Low RE
+        epsilonWallFunction
+        zeroGradient
+        fixedValue (0 or small number)
+\*---------------------------------------------------------------------------*/
+
 dimensions      [0 2 -3 0 0 0 0];
 
 internalField   uniform 0.0495;
