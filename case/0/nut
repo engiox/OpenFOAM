@@ -18,11 +18,14 @@ FoamFile
 /*--------------------------------*- C++ -*----------------------------------*\
     nut = k / omega    :    calculated value
 
-    Wall Functions - High RE
-        nut(-)WallFunction
-        nutUSpaldingWallFunction
-    Resolved BL - Low RE
-        nutUSpaldingWallFunction
+    Wall Functions - High RE (30 < y+ < 300)
+        nutkRoughWallFunction
+        nutkWallFunction
+        nutUWallFunction
+        nutUSpaldingWallFunction (y+ insensitive)
+    Resolved BL - Low RE (y+ < 6)
+        nutLowReWallFunction
+        nutUSpaldingWallFunction (y+ inseneitive)
         fixedValue (0 or small number)
 \*---------------------------------------------------------------------------*/
 
