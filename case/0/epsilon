@@ -23,6 +23,10 @@ FoamFile
         
         Cmu = 0.09
         k        : turbulent kinetic energy
+                k = 3/2 * (U * I)^2
+                    U : inlet velocity
+                    I : turbulent intensity
+                        1.0% (Low) ... 5.0% (Med) ... 10.0% (High)
         nu       : kinematic viscosity
         mut / mu : viscosity ratio
                 1 (Low) ... 10 (Med) ... 100 (High)
