@@ -17,9 +17,9 @@ FoamFile
 
 /*--------------------------------*- C++ -*----------------------------------*\
     e : turbulent dissipation
-           Cmu * k^2
-    e = --------------- 
-         nu * (mut/mu)
+           Cmu * k^2                     Cmu^0.75 * k^1.5
+    e = ---------------     or      e = ------------------
+         nu * (mut/mu)                          l
         
         Cmu = 0.09
         k        : turbulent kinetic energy
@@ -30,6 +30,7 @@ FoamFile
         nu       : kinematic viscosity
         mut / mu : viscosity ratio
                 1 (Low) ... 10 (Med) ... 100 (High)
+        l        : turbulent length scale
 
     Wall Functions - High RE
         epsilonWallFunction

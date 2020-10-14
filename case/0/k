@@ -17,7 +17,7 @@ FoamFile
 
 /*--------------------------------*- C++ -*----------------------------------*\
     k : turbulent kinetic energy
-    k = 3/2 * (U * I)^2
+    k = 3/2 * (U * I)^2         ( k = 1/2 (U' * U') = 1/2 (U*I * U*I) )
         U : inlet velocity
         I : turbulent intensity
             1.0% (Low) ... 5.0% (Med) ... 10.0% (High)
