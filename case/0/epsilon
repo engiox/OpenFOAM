@@ -30,7 +30,7 @@ FoamFile
         nu       : kinematic viscosity
         mut / mu : viscosity ratio
                 1 (Low) ... 10 (Med) ... 100 (High)
-        l        : turbulent length scale
+        l        : turbulent length scale (ex. 10% of width of inlet)
 
     Wall Functions - High RE
         epsilonWallFunction
