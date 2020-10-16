@@ -24,6 +24,11 @@ FoamFile
             U : inlet velocity
             I : turbulent intensity
                 1.0% (Low) ... 5.0% (Med) ... 10.0% (High)
+                or
+                      U'
+                I = ------ = 0.16 (Re)^(-1/8)
+                     Uavg
+                    (ex. Re = 50,000 --> I = 4%)
         mut / mu : viscosity ratio
                 1 (Low) ... 10 (Med) ... 100 (High)
 
