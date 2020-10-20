@@ -60,6 +60,7 @@ graphFormat
 runTimeModifiable yes;
 adjustTimeStep  yes;
 maxCo           1;
+maxAlphaCo      0.5;
 maxDeltaT       1;
 
 // libs & functions
