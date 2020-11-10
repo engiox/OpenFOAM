@@ -19,6 +19,18 @@ simulationType      laminar;    // no turbulence modeling
                //   RAS;        // Reynolds-Averaged Simulation modeling
                //   LES;        // Large-Eddy Simulation modeling
 
+/*
+    laminar : no file
+    RAS
+        kEpsilon         : k, epsilon
+        kOmega           : k, omega
+        LRR              : k, epsilon, R
+    LES
+        Smagorinsky      : nuSgs
+        kEqn             : k, nuSgs
+        SpalartAllmaras  : nuSgs, nuTilda
+*/
+
 RAS
 {
     RASModel        kEpsilon;   // for far-field analysis w/o high gradients and no flow separation, HI Re#
