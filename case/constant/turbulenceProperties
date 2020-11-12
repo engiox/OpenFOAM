@@ -34,6 +34,7 @@ simulationType      laminar;    // no turbulence modeling
 RAS
 {
     RASModel        kEpsilon;   // for far-field analysis w/o high gradients and no flow separation, HI Re#
+                //  realizableKE;
                 //  kOmegaSST;  // combines both advantages using blending function (Shear Stress Transport)
                 //  kOmega;     // for close-to-the-walls, not for far-field calculation, LOW Re#
             /// buoyantKEpsilon, LaunderSharmaKE, SpalartAllmaras, kkLOmega, kOmegaSSTLM, realizableKE...
