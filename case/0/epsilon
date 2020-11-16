@@ -36,6 +36,8 @@ FoamFile
         mut / mu : viscosity ratio
                 1 (Low) ... 10 (Med) ... 100 (High)
         l        : turbulent length scale (ex. 10% of width of inlet)
+                l = 0.07 L
+                    L : characteristic length
 
     Wall Functions - High RE
         epsilonWallFunction
