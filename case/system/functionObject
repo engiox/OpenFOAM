@@ -1,0 +1,27 @@
+functions
+{
+    NAME
+    {
+        type                TYPE;
+                        /*
+                            cellSource
+                            faceSource
+                            fieldAverage
+                            fieldCoordinateSystemTransform
+                            fieldMinMax
+                            nearWallFields
+                            patchProbes
+                            probes
+                            readFields
+                            sets
+                            streamLine
+                            surfaceInterpolateFields
+                            surfaces
+                        */
+        functionOjbectLibs  ("LIBRARY");
+        enabled             true;
+        /*
+           Definition
+        */
+    }
+}
