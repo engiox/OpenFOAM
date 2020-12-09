@@ -103,6 +103,11 @@ solvers
     }
 }
 
+potentialFlow
+{
+    // Potential flow algorithm controls
+}
+
 // SIMPLEC : consistent SIMPLE
 // SIMPLE
 // {
