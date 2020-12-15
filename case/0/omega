@@ -19,7 +19,12 @@ FoamFile
     omega = --- * k * ( --- )^-1
             mu          mu
 
+                 k^0.5
+    omega = --------------               : kOmegaSST model
+             Cmu^0.25 * L
+
         rho / mu = 1 / nu
+        Cmu = 0.09
         k = 3/2 * (U * I)^2  : turbulent kinetic energy
             U : inlet velocity
             I : turbulent intensity
