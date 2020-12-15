@@ -18,6 +18,8 @@ FoamFile
 /*--------------------------------*- C++ -*----------------------------------*\
     nut = k / omega    :    calculated value
 
+    nut = Cmu * k^2 / epsilon
+
     Wall Functions - High RE (30 < y+ < 300)
         nutkRoughWallFunction
         nutkWallFunction
