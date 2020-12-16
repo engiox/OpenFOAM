@@ -31,6 +31,17 @@ FoamFile
     Resolved BL - Low RE
         kLowReWallFunction
         fixedValue (0 or small number)
+
+    <patchName>
+    {
+        type        turbulentIntensityKineticEnergyInlet;
+        intensity   0.05;
+        value       <field value>;
+
+        // Optional entries
+        U           U;
+        phi         phi;
+    }
 \*---------------------------------------------------------------------------*/
 
 dimensions      [0 2 -2 0 0 0 0];

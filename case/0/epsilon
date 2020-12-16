@@ -45,6 +45,17 @@ FoamFile
         epsilonWallFunction
         zeroGradient
         fixedValue (0 or small number)
+
+    <patchName>
+    {
+        type            turbulentMixingLengthDissipationRateInlet;
+        mixingLength    1;
+        value           <field value>;
+        
+        // Optional entries
+        k               k;
+        phi             phi;
+    }
 \*---------------------------------------------------------------------------*/
 
 dimensions      [0 2 -3 0 0 0 0];

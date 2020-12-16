@@ -43,6 +43,18 @@ FoamFile
         Resolved BL - Low RE
             omegaWallFunctio
             fixedValue (large number)
+
+        <patchName>
+        {
+            type            turbulentMixingLengthFrequencyInlet;
+            mixingLength    1;
+            value           <field value>;
+
+            // Optional entries
+            Cmu             0.09;
+            k               k;
+            phi             phi;
+        }
 \*---------------------------------------------------------------------------*/
 
 #include        "include/initialConditions"
