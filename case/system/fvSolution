@@ -73,13 +73,13 @@ solvers
     //                  ==> inexpensive, use tight tolerance(1e-08)
     p
     {
-        solver          GAMG;       // GAMG 67, PCG 25, smoothSolver 5...
-     // preconditioner  DIC;        // DIC 25, DILU 2
+        solver          GAMG;           // GAMG 67, PCG 25, smoothSolver 5...
+     // preconditioner  DIC;            // DIC 25, DILU 2
         smoother        GaussSeidel;    // GaussSeidel 53, DICGaussSeidel 7...
-        tolerance       1e-06;      // 1e-06 ~ 1e-08 (61, 13 13)
-        relTol          1e-03;      // 0 to converge to solver tolerance
-        minIter         3;          // OPTIONAL, defualt value : 0
-        maxIter         100;        // OPTIONAL, default value : 1000
+        tolerance       1e-06;          // 1e-06 ~ 1e-08 (61, 13 13)
+        relTol          1e-03;          // 0 to converge to solver tolerance
+        minIter         3;              // OPTIONAL, defualt value : 0
+        maxIter         100;            // OPTIONAL, default value : 1000
     }
 
     pFinal              // PISO or PIMPLE option
@@ -94,7 +94,7 @@ solvers
      // preconditioner  DILU;           // DILU 50, DIC 3
         smoother        symGaussSeidel; // symGaussSeidel 113, GaussSeidel 42..
         tolerance       1e-08;          // 1e-05 ~ 1e-08 (62,, 78, 28, 22)
-        relTol          0.001;            // 0.1 : 107, 0 : 88, 0.01 : 12
+        relTol          0.001;          // 0.1 : 107, 0 : 88, 0.01 : 12
     }
     UFinal
     {
