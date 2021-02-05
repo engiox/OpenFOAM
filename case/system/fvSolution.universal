@@ -1,0 +1,345 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1806                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+/* The solution is considered converged when the residual has reached the 
+   tolerance 1.0e-6 or if it has been reduced by relTol 0.05 at each time step.
+   relTol 0; disables relTol - e.g. in case of PISO as this algorithm solves 
+   each equation only once per time step.
+   
+   PCG - Preconditioned Conjugate Gradient solver for symmetric matrices
+   GAMG - generalised geometric-algebraic multi-grid solver
+   PBiCG - Preconditioned biConjugate Gradient solver for asymmetric matrices
+   smoothSolver - solver using a smoother for symmetric / asymmetric matrices
+   PCG - Preconditioned Conjugate Gradient solver for symmetric matrices
+   DILU - Diagonal Incomplete Lower Upper decomposition
+   DIC - Diagonal Incomplete Cholesky - decomposition.                      */
+   
+solvers {
+  rho {             //"rho.*" = (rho|rhoFinal) i.e. rho and rhoFinal
+    solver          PCG;
+    preconditioner  DIC;
+    tolerance       1e-05;
+    relTol          0.1;
+  }
+
+  rhoFinal {
+    $rho;           //copies setting from 'rho'
+    tolerance       1e-05;
+    relTol          0;
+  }
+
+  "(U|k|epsilon|f|v2|Urel)" {
+    solver          smoothSolver;
+    smoother        symGaussSeidel;
+    tolerance       1e-06;
+    relTol          0.1;
+    //nSweeps       1.0;    // used in simpleFoam/airfoil2D
+  }
+  
+  //lagrangian\DPMFoam\Goldschmidt\system
+  "(U.air)"  {
+    solver          smoothSolver;
+    smoother        symGaussSeidel;
+    tolerance       1e-05;
+    relTol          0.1;
+  }
+
+  "(U.air)Final"  {
+    solver          smoothSolver;
+    smoother        symGaussSeidel;
+    tolerance       1e-05;
+    relTol          0.1;
+  }
+  
+  "(p|p_rgh)" {
+    solver                GAMG;
+    tolerance             1e-7;
+    relTol                0.1;
+    smoother              GaussSeidel;  //DICGaussSeidel;
+	nCellsInCoarsestLevel 20;
+	nPreSweeps            0;
+    nPostSweeps           2;
+	cacheAgglomeration    true;
+	agglomerator          faceAreaPair;
+	//mergeLevels           1;
+  }
+
+  "(p|p_rgh)Final" {
+    $p;
+    tolerance       1e-06;
+    relTol          0;
+	maxIter         20;
+  }
+	
+  "(U|k|epsilon|f|v2)Final" {
+    $U;
+    tolerance       1e-06;
+    relTol          0;
+  }
+
+  nuTilda {
+    solver          smoothSolver;    //PBiCGStab;
+    smoother        symGaussSeidel;  //DILU;
+    tolerance       0;
+    relTol          0.1;
+  }
+
+  nuTildaFinal {
+    $U;
+    tolerance        1e-6;
+    relTol           0;
+  }
+
+  "(omega|R)" {
+    solver          smoothSolver;
+    smoother        GaussSeidel;
+    tolerance       1e-05;
+    relTol          0;
+  }
+
+  "(omega|R)Final" {
+    $U;
+    tolerance       1e-06;
+    relTol          0;
+  }
+  
+  T  {    //scalarTransportFoam, laplacianFoam
+    solver          PBiCGStab;  //PCG
+    preconditioner  DILU;       //DIC
+    tolerance       1e-06;
+    relTol          0;
+  }
+  
+  Phi {    //potentialFoam
+    solver          GAMG;
+    smoother        DIC;
+    tolerance       1e-06;
+    relTol          0.01;
+  }
+  // -----------------------------Multiphase-----------------------------------
+  //"alpha.*"  {  nAlphaSubCycles 3;   }
+  
+  //multiphase\ interCondensatingEvaporatingFoam\ condensatingVessel
+  /*
+  ".*(rho|rhoFinal)"  {  
+    solver          diagonal;     
+  } */
+  
+  "alpha.water.*" {      //Update for alpha.air, alpha.fuel - each phase
+    nAlphaCorr      2;
+    nAlphaSubCycles 1;
+    cAlpha          1;
+
+    MULESCorr       yes;
+    nLimiterIter    3;
+
+    solver          smoothSolver;
+    smoother        symGaussSeidel;
+    tolerance       1e-8;
+    relTol          0;
+  }
+
+  "pcorr.*" {
+    solver          PCG;
+    //preconditioner  DIC;
+	preconditioner {
+      preconditioner  GAMG;
+      tolerance       1e-05;
+      relTol          0;
+      smoother        DICGaussSeidel;
+    }
+    tolerance       1e-5;
+    relTol          0;
+  }
+  
+  "e.*" {
+    solver          smoothSolver;
+    smoother        symGaussSeidel;
+    tolerance       1e-7;
+    relTol          0;
+    minIter         1;
+  }
+
+  "(Theta).*" {
+    solver          smoothSolver;
+    smoother        symGaussSeidel;
+    tolerance       1e-7;
+    relTol          0;
+    minIter         1;
+  }
+  
+  "(h).*"    {
+    solver          smoothSolver;
+    smoother        symGaussSeidel;
+    tolerance       1e-6;
+    relTol          0;
+    minIter         1;
+  }
+  
+  "(kinematicCloud:theta)"  {
+    solver          GAMG;
+    tolerance       1e-06;
+    relTol          0.01;
+    smoother        GaussSeidel;
+  }
+	
+  "(kinematicCloud:theta)Final"  {
+    solver          GAMG;
+    tolerance       1e-06;
+    relTol          0;
+    smoother        GaussSeidel;
+  }
+  // -----------------------------Combustion-----------------------------------
+  "(Yi|CO2|O2|N2|CH4|H2|H2O|CO)" {
+    solver          PBiCGStab;
+    preconditioner  DILU;
+    tolerance       1e-6;
+    relTol          0;
+  }
+
+  "(Yi|CO2|O2|N2|CH4|H2|H2O|CO)Final" {
+    solver          PBiCGStab;
+    preconditioner  DILU;
+    tolerance       1e-6;
+    relTol          0;
+  }
+  
+  h {
+    $Yi;
+    relTol          0.1;
+  }
+
+  hFinal {
+    $Yi;
+  }
+  
+  "(b|Su|Xi|ft|ha|hau)" {
+    solver          PBiCGStab;
+    preconditioner  DILU;
+    tolerance       1e-05;
+    relTol          0.1;
+  }
+
+  "(b|Su|Xi|ft|ha|hau)Final" {
+    solver          PBiCGStab;
+    preconditioner  DILU;
+    tolerance       1e-05;
+    relTol          0;
+  }
+  
+  Ii {
+    solver              GAMG;
+    tolerance           1e-4;
+    relTol              0;
+    smoother            symGaussSeidel;
+    nPostSweeps         1;
+    cacheAgglomeration  true;
+    nCellsInCoarsestLevel   10;
+    agglomerator        faceAreaPair;
+    mergeLevels         1;
+    maxIter             5;
+    nPreSweeps          0;
+    nPostSweeps         1;
+  }
+
+  G {
+    solver          PCG;
+    preconditioner  DIC;
+    tolerance       1e-04;
+    relTol          0;
+  }
+  
+  "(G)Final" {
+    solver          PCG;
+    preconditioner  DIC;
+    tolerance       1e-04;
+    relTol          0;
+  }
+}
+// -----------------------------PV-Couplings------------------------------------
+SIMPLE {
+  nUCorrectors             2;
+  nNonOrthogonalCorrectors 0;
+  residualControl {
+    p               1e-5;
+    U               1e-5;
+    nuTilda         1e-5;
+	"(k|epsilon|omega|f|v2)" 1e-3;   // found in simpleFoam/pitzDaily
+  }
+}
+
+PISO {
+  //p equation solved n = 2 time, thus pressure-velocity coupling is done twice
+  nCorrectors              2;
+  nNonOrthogonalCorrectors 0;
+  
+  //The pressure is set to pRefValue 0 in cell number pRefCell 0.
+  //This is over-ridden if constant pressure boundary condition is used
+  pRefCell                 0;
+  pRefValue                0;
+}
+
+PIMPLE {
+  transonic                 no;
+  nCorrectors               2;
+  //p equation solved n = 2 time, thus pressure-velocity coupling is done twice
+  
+  nOuterCorrectors          5;
+  nNonOrthogonalCorrectors  0;
+  consistent                no;
+  momentumPredictor         yes;
+  hydrostaticInitialization yes;
+  nHydrostaticCorrectors    5;
+  correctPhi                yes;
+  moveMeshOuterCorrectors   yes;
+  
+  //Compressible version
+  pMaxFactor                1.5;
+  pMinFactor                0.9;
+  turbOnFinalIterOnly       no;
+  residualControl {
+    "(U|k|epsilon)"  {
+      relTol          0;
+      tolerance       0.0001;
+    }
+  }
+}
+// -----------------------------URFs-------------------------------------------
+relaxationFactors {
+  // 0.9 is more stable but 0.95 more convergent
+  
+  fields {
+    nuTilda       0.75;
+    U             0.75;
+    "p.*"         0.40;
+    "rho.*"       0.90;
+	T             0.90
+  }
+  
+  equations {
+    k             0.50;
+	epsilon       0.50;
+	//"(U|k).*"   0.75;     //Multiphase flows
+	//".*"        0.90;     //Same settings for all equations
+  }
+  
+  equations {
+    ".*Final"                0.95;
+	"(CH4|O2|H2O|CO|CO2|h).*"   0.90;
+  }
+}
+// ************************************************************************* //

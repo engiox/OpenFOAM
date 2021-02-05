@@ -1,0 +1,136 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.5                                   |
+|   \\  /    A nd           | Web:      http://www.OpenFOAM.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes {
+    default         steadyState;    //Euler, backward, CrankNicolson 0.5;
+}
+
+gradSchemes {       // 'gradSchemes' is a , 'default' is a 'class'
+    default          Gauss linear;   //'Gauss' is 'object' of class 'default'
+   //default         leastSquares;   // electrostaticFoam, rhoSimpleFoam
+    grad(p)          Gauss linear;
+    grad(U)          Gauss linear;   // cellLimited Gauss linear 1
+}
+
+divSchemes {
+  default          none;            //Gauss upwind
+  div(U)           Gauss linear;    //Gauss vanLeerV, Gauss vanLeer
+  div(phi,U)       Gauss upwind;    //Gauss LUST grad(U)
+  div(phi,Urel)    Gauss limitedLinear 1;
+  div(phi,k)       Gauss upwind;
+  div(phi,epsilon) Gauss upwind;    //Gauss linearUpwind limitedGrad
+  div(phi,omega)   bounded Gauss limitedLinear 0.2;
+  div(phi,T)       Gauss linearUpwind grad(T);
+  div(phi,R)       Gauss upwind;
+  div(phi,Ekp)     Gauss limitedLinear 1;
+  div(phi,T)       Gauss limitedLinear 1;
+  div(R)           Gauss linear;
+  div(phi,e)       bounded Gauss upwind; //Gauss limitedLinear 1
+  div(phi,nuTilda) Gauss upwind;         //Gauss limitedLinear 1
+  div(phid,p)     Gauss limitedLinear 1;                  
+  div(phi,K)      Gauss limitedLinear 1;                  
+  div(phiv,p)     Gauss limitedLinear 1;
+  div((nuEff*dev(grad(U).T()))) Gauss linear;
+  div(((rho*nuEff)*dev2(T(grad(U)))))  Gauss linear;
+  
+  //Multiphase flow: for each phase
+  div(rhoPhi,U)   Gauss linear;
+  div(phi,alpha)  Gauss vanLeer;
+  div(phi,s)      Gauss vanLeer;
+  div(phirb,s)    Gauss linear;
+  div(phirb,alpha) Gauss linear;
+  div(phi,k)      Gauss limitedLinear 1;
+  div(phi,B)      Gauss limitedLinear 1;
+  div(B)          Gauss linear;
+  div(alphaPhi.air,U.air)    Gauss linearUpwindV unlimited;
+  div(((alpha.air*nuEff.air)*dev2(T(grad(U.air))))) Gauss linear;
+  
+  "div\(phi,alpha.*\)"             Gauss vanLeer;
+  "div\(phir,alpha.*,alpha.*\)"    Gauss vanLeer;
+  "div\(alphaPhi.*,U.*\)"          Gauss limitedLinearV 1;
+  div(Rc)                          Gauss linear;
+  "div\(phi.*,U.*\)"               Gauss limitedLinearV 1;
+  "div\(phir,alpha.*\)"            Gauss vanLeer;
+
+  "div\(alphaRhoPhi.*,U.*\)"       Gauss limitedLinearV 1;
+
+  "div\(alphaRhoPhi.*,(h|e).*\)"   Gauss limitedLinear 1;
+  "div\(alphaRhoPhi.*,K.*\)"       Gauss limitedLinear 1;
+  "div\(alphaPhi.*,p\)"            Gauss limitedLinear 1;
+  
+  //reactingTwoPhaseEulerFoam
+  div(alphaRhoPhi.particles,Theta.particles) Gauss limitedLinear 1;
+  "div\(alphaRhoPhi.*,(k|epsilon).*\)"  Gauss limitedLinear 1;
+
+  div((((alpha.air*thermo:rho.air)*nuEff.air)*dev2(T(grad(U.air))))) Gauss linear;
+  "div\(\(\(\(alpha.*\*thermo:rho.*\)\*nuEff.*\)\*dev2\(T\(grad\(U.*\)\)\)\)\)" Gauss linear;
+  div((((thermo:rho.particles*nut.particles)*dev2(T(grad(U.particles)))) +
+  (((thermo:rho.particles*lambda.particles)*div(phi.particles))*I)))  Gauss linear;
+	
+  //Combustion models
+  div(Ji,Ii_h)    Gauss upwind;
+  //div(phi,Yi_h)   Gauss upwind;
+  div(phi,Yi_h)   Gauss multivariateSelection  {
+    O2              limitedLinear01 1;
+    CH4             limitedLinear01 1;
+    N2              limitedLinear01 1;
+    H2O             limitedLinear01 1;
+    CO2             limitedLinear01 1;
+    h               limitedLinear 1;
+  };
+  div((Su*n)) Gauss linear;
+  div((U+((Su*Xi)*n))) Gauss linear;
+  div(phi,ft_b_ha_hau) Gauss multivariateSelection  {
+    fu  limitedLinear01 1;
+    ft  limitedLinear01 1;
+    b   limitedLinear01 1;
+    ha  limitedLinear 1;
+    hau limitedLinear 1;
+  };
+  div(phiXi,Xi)   Gauss limitedLinear 1;
+  div(phiSt,b)    Gauss limitedLinear01 1;
+}
+
+laplacianSchemes {
+  default               Gauss linear orthogonal; //Gauss linear uncorrected
+  laplacian(nuEff,U)    Gauss linear corrected;  //Gauss linear limited corrected 0.5
+  laplacian((1|A(U)),p) Gauss linear corrected;
+  laplacian(DkEff,k)    Gauss linear corrected;
+  laplacian(DepsilonEff,epsilon) Gauss linear corrected;
+  laplacian(DREff,R)    Gauss linear corrected;
+  laplacian(DnuTildaEff,nuTilda) Gauss linear corrected;
+  laplacian(DT,T)       Gauss linear corrected;  //laplacianFoam
+  laplacian(diffusivity,cellMotionU) Gauss linear uncorrected;
+}
+
+interpolationSchemes {
+  default         linear;
+  interpolate(U)  linear;
+}
+
+snGradSchemes {
+  default          orthogonal;   //corrected, limited corrected 0.333
+}
+
+fluxRequired {
+  default         no;
+  p;
+}
+
+wallDist {
+  method meshWave;
+}
+// ************************************************************************* //
