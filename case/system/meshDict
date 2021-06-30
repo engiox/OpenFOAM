@@ -15,7 +15,7 @@ FoamFile
     object    meshDict;
 }
 
-// MANDATORY * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// MANDATORY *************************************************************** //
 
 // path to the surface mesh relative from case or absolute
 surfaceFile "surfaceMeshes/surf.fms";
@@ -23,7 +23,7 @@ surfaceFile "surfaceMeshes/surf.fms";
 // maximum cell size in the mesh
 maxCellSize 3.0;
 
-// OPTIONAL REFINEMENT SETTINGS  * * * * * * * * * * * * * * * * * * * * * * //
+// OPTIONAL REFINEMENT SETTINGS ******************************************** //
 
 // size of the cells at the boundary
 boundaryCellSize 1.0;
@@ -57,7 +57,7 @@ localRefinement
 // refinement zones inside the mesh based on primitive geometric objects
 objectRefinements
 {
-    /*  types...
+    /** types...
         box         : centre, lengthX, lengthY, lengthZ
         cone        : p0, p1, radius0, radius1
         hollowCone  : p0, p1, radius0_Inner, radius0_Outer,
@@ -122,7 +122,7 @@ edgeMeshRefinement
     }
 }
 
-// KEEPING/REMOVING OF CELLS IN USER-DEFINED REGIONS * * * * * * * * * * * * //
+// KEEPING/REMOVING OF CELLS IN USER-DEFINED REGIONS *********************** //
 
 // keep template cells intersecting boundary
 keepCellsIntersectingBoundary   1;  // 1 keep or 0 only internal cells are used
@@ -165,7 +165,7 @@ removeCellsIntersectingPatches
     }
 }
 
-// BOUNDARY LAYERS * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// BOUNDARY LAYERS ********************************************************* //
 
 boundaryLayers
 {
@@ -217,7 +217,7 @@ boundaryLayers
     }
 }
 
-// ANISOTROPIC MESHING * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// ANISOTROPIC MESHING ***************************************************** //
 
 anisotropicSources
 {
@@ -252,7 +252,7 @@ anisotropicSources
     }
 }
 
-// WORKFLOW CONTROL  * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// WORKFLOW CONTROL  ******************************************************* //
 
 workflowControls
 {
@@ -274,7 +274,7 @@ workflowControls
     restartFromLatestStep   1;
 }
 
-// RENAMING PATCHES  * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// RENAMING PATCHES  ******************************************************* //
 
 renameBoundary
 {
@@ -302,14 +302,14 @@ renameBoundary
     }
 }
 
-// ENFORCING GEOMETRY CONSTRAINTS  * * * * * * * * * * * * * * * * * * * * * //
+// ENFORCING GEOMETRY CONSTRAINTS  ***************************************** //
                
 // stops the meshing process when it is not possible to capture all geometric
 // features. stops meshing and writes a subset of points that should be removed
 enforceGeometryConstraints  1;      // 1 active or 0 inactive
      
 
-// UTILITIES * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// UTILITIES *************************************************************** //
 /*
    checkSurfaceMesh
    copySurfaceParts
