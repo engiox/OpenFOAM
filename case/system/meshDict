@@ -274,7 +274,6 @@ workflowControls
     restartFromLatestStep   1;
 }
 
-
 // RENAMING PATCHES  * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 renameBoundary
