@@ -1,0 +1,341 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                |
+| \\      /  F ield         | cfMesh: A library for mesh generation          | 
+|  \\    /   O peration     |                                                |
+|   \\  /    A nd           | Author: Franjo Juretic                         | 
+|    \\/     M anipulation  | E-mail: franjo.juretic@c-fields.com            |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version   2.0;
+    format    ascii;
+    class     dictionary;
+    location  "system";
+    object    meshDict;
+}
+
+// MANDATORY * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// path to the surface mesh relative from case or absolute
+surfaceFile "surfaceMeshes/surf.fms";
+
+// maximum cell size in the mesh
+maxCellSize 3.0;
+
+// OPTIONAL REFINEMENT SETTINGS  * * * * * * * * * * * * * * * * * * * * * * //
+
+// size of the cells at the boundary
+boundaryCellSize 1.0;
+
+// distance from the boundary at which boundary cell size shall be used
+boundaryCellSizeRefinementThickness 4.5;
+
+// minimum cell size allowed in the automatic refinement procedure
+minCellSize 0.50;
+
+// refinement zones at the surface of the mesh
+localRefinement
+{
+    // patch name
+    "patch15.*"     // accepts regex
+    {
+        // additional refinement levels to the maxCellSize
+        additionalRefinementLevels  1;
+
+        // thickness of the refinement region away from the patch
+        refinementThickness     4.5;
+    } 
+
+    // subset name
+    subset1
+    {
+        cellSize    1.5;
+    }
+}
+
+// refinement zones inside the mesh based on primitive geometric objects
+objectRefinements
+{
+    /*  types...
+        box         : centre, lengthX, lengthY, lengthZ
+        cone        : p0, p1, radius0, radius1
+        hollowCone  : p0, p1, radius0_Inner, radius0_Outer,
+                              radius1_Inner, radius1_Outer
+        sphere      : centre, radius
+        line        : p0, p1
+    */
+    boxExample
+    {
+        type        box;
+        centre      (500 500 150);
+        lengthX     100;
+        lengthY     150;
+        lengthZ     200;
+
+        cellSize    7.51;
+        // additionalRefinementLevels & refinementThickness
+    }
+}
+
+// refine regions intersected by surface meshes
+surfaceMeshRefinement
+{
+    // name of the refinement region
+    hull
+    {
+        // path to the surface file
+        surfaceFile "refSurface.stl";
+
+        // additional refinement levels to the maxCellSize
+        additionalRefinementLevels  3;
+
+        // thickness of the refinement region away from the surface
+        refinementThickness 50;
+    }
+    deck
+    {
+        surfaceFile "refDeck.ftr";
+        cellSize    6.125;
+    }
+}
+
+// refine regions intersected by edge meshes
+edgeMeshRefinement
+{
+    // name of the refinement region
+    edgeMeshExample
+    {
+        // path to the edge mesh file
+        edgeFile    "refEdges.vtk";
+
+        // additional refinement levels to the maxCellSize
+        additionalRefinementLevels  3;
+
+        // thickness of the refinement region away from the surface
+        refinementThickness 50;
+    }
+    cellSizeExample
+    {
+        edgeFile    "refEdges.vtk";
+        cellSize    6.125;
+    }
+}
+
+// KEEPING/REMOVING OF CELLS IN USER-DEFINED REGIONS * * * * * * * * * * * * //
+
+// keep template cells intersecting boundary
+keepCellsIntersectingBoundary   1;  // 1 keep or 0 only internal cells are used
+
+// remove cells where distinct parts of the mesh are joined together
+// active only when keepCellsIntersectingBoundary is active
+checkForGluedMesh   0;  // 1 active or 0 inactive
+
+// keep cells in the mesh template which intersect selected patches/subsets
+// active only when keepCellsIntersectingBoundary is switched off
+keepCellsIntersectingPatches
+{
+    // patch name
+    "patch1.*"  // accepts reges
+    {
+        keepCells   1;  // 1 active or 0 inactive
+    }
+    
+    // subset name
+    subset1
+    {
+        keepCells   1;
+    }
+}
+
+// remove cells intersected by the selected patches/subsets
+// active when keepCellsIntersectigBoundary is active
+removeCellsIntersectingPatches
+{
+    // patch name
+    "patch1.*"  // accepts reges
+    {
+        keepCells   1;  // 1 active or 0 inactive
+    }
+    
+    // subset name
+    subset1
+    {
+        keepCells   1;
+    }
+}
+
+// BOUNDARY LAYERS * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundaryLayers
+{
+    // global number of layers
+    nLayers 3;
+
+    // global thickness ratio
+    thicknessRatio 1.2;
+
+    // global max thickness of the first layer
+    maxFirstLayerThickness 0.5;
+
+    // local settings for individual patches
+    patchBoundaryLayers
+    {
+        //patch name
+        "patch7.*"
+        {
+            nLayers           4;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.2;
+            allowDiscontinuity 0;
+        }
+    }
+
+    // activates smoothing of boundary layers, deactivate by default
+    optimizeLayer   1;
+
+    // deactivate untagling of boundary layers, activated by default
+    untangleLayers  0;
+
+    optimizationParameters
+    {
+        // number of iterations in the procedure for reducing normal variation
+        nSmoothNormals  3;      // default : 5
+
+        // maximum number of iterations of the whole procedure
+        maxNumIterations    5;      // default : 5
+
+        // ratio between the maximum layer thickness and the feature size
+        featureSizeFactor   0.4;    // default : 0.3
+
+        // activate 1 or deactivate 0 calculation of normal
+        reCalculateNormals  1;      // default : 1 (active)
+
+        // maximum allowed thickness variation of thickness between two 
+        // neighbouring points, divided by the distance between the points
+        relThicknessTol 0.1;
+    }
+}
+
+// ANISOTROPIC MESHING * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+anisotropicSources
+{
+    boxExample 
+    {
+        // box is determined by its centre and the size in x, y, and z dirs
+        type    box;
+        centre  (2800 0 250);
+        lengthX 6000;
+        lengthY 1000;
+        lengthZ 200;
+
+        // scaling factors in each direction
+        scaleX  1;
+        scaleY  1;
+        scaleZ  0.3;
+    }
+
+    planeExample
+    {
+        // plane is determined by its origin and the normal vector
+        type    plane;
+        normal  (0 0 1);
+        origin (0 0 250);
+
+        // scaling is applied in the positive normal direction within
+        // the distance specified below
+	    scalingDistance 125;
+
+        // scaling factor in the normal direction
+        scalingFactor 0.5;
+    }
+}
+
+// WORKFLOW CONTROL  * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+workflowControls
+{
+    // stops the meshing process after the initial mesh has been generated
+    // avaiable steps are :
+    // 1. templateGeneration
+    // 2. surfaceTopology
+    // 3. surfactProjection
+    // 4. patchAssignment
+    // 5. edgeExtraction
+    // 6. boundaryLayerGeneration
+    // 7. meshOptimisation
+    // 8. boundaryLayerRefinement
+
+    stopAfter   templateGeneration;
+
+    // reads the mesh from disk and restarts the meshing process
+    // after the latest step
+    restartFromLatestStep   1;
+}
+
+
+// RENAMING PATCHES  * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+renameBoundary
+{
+    // new name of all patches except the ones specified below
+    defaultName		fixedWalls;
+
+    // new type of the default patch
+    defaultType		wall;
+
+    newPatchNames
+    {
+        // patch name in the surface mesh
+        "patch0.*"  // accepts regex
+        {
+            // patch name in the volume mesh
+            newName	outlet;
+    	    type     wall;
+        }
+ 
+        patch1
+        {
+            newName  inlet;
+            type     patch;
+        }
+    }
+}
+
+// ENFORCING GEOMETRY CONSTRAINTS  * * * * * * * * * * * * * * * * * * * * * //
+               
+// stops the meshing process when it is not possible to capture all geometric
+// features. stops meshing and writes a subset of points that should be removed
+enforceGeometryConstraints  1;      // 1 active or 0 inactive
+     
+
+// UTILITIES * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+/*
+   checkSurfaceMesh
+   copySurfaceParts
+   extrudeEdgesInto2DSurface
+   FLMAToSurface
+   FMSToSurface
+   FMSToVTK
+   generateBoundaryLayers
+   importSurfaceAsSubset
+   improveMeshQuality
+   improveSymmetryPlanes
+   mergeSurfacePatches
+   meshToFPMA
+   patchesToSubsets
+   preparePar
+   removeSurfaceFacets
+   scaleMesh
+   scaleSurfaceMesh
+   subsetToPatch
+   surfaceFeatureEdges
+   surfaceGenerateBoundingBox
+   surfaceToFMS
+
+   extractFeatureEdges.py
+   salomeTriSurf.py
+*/
+
+// ************************************************************************* //
