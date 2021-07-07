@@ -309,6 +309,40 @@ renameBoundary
 enforceGeometryConstraints  1;      // 1 active or 0 inactive
      
 
+// MESH QUALITY SETTINGS  ************************************************** //
+
+meshQualitySettings
+{
+    maxNonOrthogonality 65.0;
+
+    maxSkewness 2.0;
+
+    fcUniform 0.1;
+
+    volUniform 0.1;
+
+    maxAngle 10;
+
+    minTetQuality 0.001;
+
+    minFaceTwist 0.1;
+
+    minCellDeterminant 1e-15;
+
+    minVolRatio 0.1;
+
+    minFaceTriangleTwist 0.1;
+
+    minPyramidVolume 1e-15;
+
+    minimumFaceArea 1e-15;
+
+    faceFlatness 0.001;
+
+    minCellPartTetrahedra 1e-15;
+}
+               
+
 // UTILITIES *************************************************************** //
 /*
    checkSurfaceMesh
