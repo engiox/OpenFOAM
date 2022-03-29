@@ -31,6 +31,12 @@ stopAt
 endTime         1;
 deltaT          0.0002;
 
+/* TIME STEP CONTROL * * * * * * * * * * * * * * * * * * * * * * * * * * * * */ 
+adjustTimeStep  yes;
+maxCo           0.8;
+maxDeltaT       0.5;
+maxAlphaCo      0.5;
+
 /* DATA WRITING  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 writeControl
     //  timeStep;	    	// every "writeInterval" time steps
@@ -44,7 +50,7 @@ writeFormat
         ascii;
      // binary;
 writePrecision  7;	// 6 by default
-writeCompression no;	// on/off, yes/no, true/false
+writeCompression no;	// on/off, yes/no, true/false, uncompressed/compressed
 timeFormat
         general;	// (default) scientific if exp<-4 or exp>="timePrecision"
     //  fixed;		// ¡¾m.dddddd  ... d set by "timePrecision"
@@ -56,12 +62,8 @@ graphFormat
      // xmgr;
      // jplot;
 
-/* OTHER SETTINGS  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* DATA READING  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 runTimeModifiable yes;
-adjustTimeStep  yes;
-maxCo           1;
-maxAlphaCo      0.5;
-maxDeltaT       1;
 
 // libs & functions
 
