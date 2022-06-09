@@ -1,0 +1,72 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _d44c8318-20220111 OPENFOAM=2112 version=2112
+Arch   : "LSB;label=32;scalar=64"
+Exec   : surfaceFeatureExtract
+Date   : Jun 09 2022
+Time   : 14:57:55
+Host   : simcom
+PID    : 3268427
+I/O    : uncollated
+Case   : /home/x/OpenFOAM/x-v2112/exercises/incompressible/chamber_mrf
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+
+Note: Feature line extraction only valid on closed manifold surfaces
+
+Reading surfaceFeatureExtractDict
+
+Surfaces     : chamber.stl
+Output       : chamber
+Load options : offset
+Write options: writeObj=off writeVTK=off
+
+Statistics:
+Triangles    : 154810 in 6 region(s)
+Vertices     : 77367
+Bounding Box : (-0.33 -0.3 -0.1305) (0.27 0.61 0.1245)
+
+Constructing feature set from included angle 150
+Selecting edges based purely on geometric tests: no
+
+Initial Feature set:
+    points : 290
+    edges  : 14418
+    of which
+        region edges   : 2541
+        external edges : 6873
+        internal edges : 5004
+
+Final Feature set:
+    points : 14273
+    of which
+        convex             : 70
+        concave            : 0
+        mixed              : 220
+        non-feature        : 13983
+    edges  : 14418
+    of which
+        external edges     : 7368
+        internal edges     : 7050
+        flat edges         : 0
+        open edges         : 0
+        multiply connected : 0
+
+Writing extendedFeatureEdgeMesh to "/home/x/OpenFOAM/x-v2112/exercises/incompressible/chamber_mrf/constant/extendedFeatureEdgeMesh/chamber.extendedFeatureEdgeMesh"
+
+Writing featureEdgeMesh to "/home/x/OpenFOAM/x-v2112/exercises/incompressible/chamber_mrf/constant/triSurface/chamber.eMesh"
+ExecutionTime = 0.48 s  ClockTime = 1 s
+
+End
+

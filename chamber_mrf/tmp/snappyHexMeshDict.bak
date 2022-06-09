@@ -1,0 +1,134 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry
+{
+    cb_exhext.stl
+    {
+        type triSurfaceMesh;
+
+        regions
+        {
+            inlet { name inlet; }
+            outlet { name outlet; }
+            walls { name walls; }
+            rotating { name rotor; }
+        }
+    }
+};
+
+castellatedMeshControls
+{
+    maxLocalCells 100000;
+    maxGlobalCells 2000000;
+    minRefinementCells 10;
+    maxLoadUnbalance 0.10;
+    nCellsBetweenLevels 1;
+
+    features
+    (
+        {
+            file    "edges.obj";
+            level   0;
+        }
+        //{
+        //    file "someLine.eMesh";
+        //    //level 2;        // Have level 2 for all cells intersected
+        //    levels ((0.1 2)); // Have level 2 for all cells within
+        //                      // 0.1 of feature.
+        //}
+    );
+
+    refinementSurfaces
+    {
+        cb_exhext.stl
+        {
+            // Surface-wise min and max refinement level
+            level (2 2);
+
+//            gapLevelIncrement 4;
+
+            // Optional region-wise level specification
+            regions
+            {
+                walls
+                {
+                    level (2 2);
+                }
+                rotor
+                {
+                    level (3 3);
+                }
+            }
+        }
+    }
+
+    resolveFeatureAngle 30;
+
+//    gapLevelIncrement 4;
+
+    planarAngle 30;
+
+    refinementRegions
+    {
+        cb_exhext.stl
+        {
+            mode inside;
+            levels ((10 0));
+            // gapLevel (<numGapCells> <minLevel> <maxlevel>);
+            gapLevel    (4 0 6);
+            gapMode     mixed;
+            gapSelf     true;
+        }
+
+    }
+
+    limitRegions
+    {
+    }
+
+    locationInMesh (0 0 -0.01);
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 2.0;
+    nSolveIter 30;
+    nRelaxIter 5;
+    nFeatureSnapIter 10;
+    implicitFeatureSnap false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap false;
+}
+
+addLayersControls
+{
+}
+
+meshQualityControls
+{
+    #include "meshQualityDict"
+    nSmoothScale 4;
+    errorReduction 0.75;
+}
+
+mergeTolerance 1e-6;

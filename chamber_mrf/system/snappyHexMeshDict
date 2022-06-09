@@ -1,0 +1,160 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry
+{
+    chamber.stl
+    {
+        type triSurfaceMesh;
+        name chamber;
+
+        regions
+        {
+            inlet { name inlet; }
+            outlet { name outlet; }
+            wall_conduit { name wall_conduit; }
+            wall_lower { name wall_lower; }
+            wall_upper { name wall_upper; }
+            wall_rotor { name wall_rotor; }
+        }
+    }
+
+    MRFcyl
+    {
+        type    searchableCylinder;
+        point1  (0 0 -0.02);
+        point2  (0 0  0.02);
+        radius  0.18;
+    }
+};
+
+castellatedMeshControls
+{
+    maxLocalCells 100000;
+    maxGlobalCells 2000000;
+    minRefinementCells 10;
+    maxLoadUnbalance 0.10;
+    nCellsBetweenLevels 1;
+
+    features
+    (
+        {
+            file    "edges.vtk"; //"cb_exhext.eMesh";
+            level   0;
+        }
+        //{
+        //    file "someLine.eMesh";
+        //    //level 2;        // Have level 2 for all cells intersected
+        //    levels ((0.1 2)); // Have level 2 for all cells within
+        //                      // 0.1 of feature.
+        //}
+    );
+
+    refinementSurfaces
+    {
+        chamber
+        {
+            // Surface-wise min and max refinement level
+            level (0 0);
+
+//            gapLevelIncrement 4;
+
+            // Optional region-wise level specification
+            regions
+            {
+                walls
+                {
+                    level (1 3); //(1 3);
+                }
+                rotating
+                {
+                    level (1 3); //(2 3);
+                }
+            }
+        }
+
+//        conduits
+//        {
+//            level (2 6);
+//        }
+    }
+
+    resolveFeatureAngle 30; // was 30
+
+//    gapLevelIncrement 4;
+
+    planarAngle 30;
+
+    refinementRegions
+    {
+        chamber // cb_exhext.stl
+        {
+            mode inside;
+            levels ((1.0 1));
+            // gapLevel (<numGapCells> <minLevel> <maxlevel>);
+            gapLevel    (4 0 6);
+            gapMode     inside;
+            gapSelf     true;
+        }
+
+//        ring
+//        {
+//            mode        inside;
+//            levels      ((10 4));
+//            gapLevel    (4 0 6);
+//            gapMode     outside;
+//            gapSelf     true;
+//        }
+
+    }
+
+    limitRegions
+    {
+    }
+
+    locationInMesh (0 0 -0.01);
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 2.0; //2.0;
+    nSolveIter 50; // 30 / 50 / 100
+    nRelaxIter 10; // 5 / 10 / 20
+    nFeatureSnapIter 20; // 10 / 20 / 100
+    implicitFeatureSnap false; // default was false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap false; // default was false;
+}
+
+addLayersControls
+{
+}
+
+meshQualityControls
+{
+    #include "meshQualityDict"
+    nSmoothScale 4;
+    errorReduction 0.75;
+    maxBoundarySkewness 4;
+}
+
+mergeTolerance 1e-6;
