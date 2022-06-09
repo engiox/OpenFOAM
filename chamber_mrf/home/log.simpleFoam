@@ -1,0 +1,31 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _d44c8318-20220111 OPENFOAM=2112 version=2112
+Arch   : "LSB;label=32;scalar=64"
+Exec   : simpleFoam
+Date   : Jun 09 2022
+Time   : 23:31:36
+Host   : X-PC
+PID    : 12770
+I/O    : uncollated
+Case   : /home/x/OpenFOAM/exercise/chamber_mrf
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create mesh for time = 0
+
+
+SIMPLE: no convergence criteria found. Calculations will run for 1000 steps.
+
+Reading field p
+

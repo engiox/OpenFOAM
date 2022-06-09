@@ -1,0 +1,163 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry
+{
+    chamber.stl
+    {
+        type triSurfaceMesh;
+        name chamber;
+
+        regions
+        {
+            inlet { name inlet; }
+            outlet { name outlet; }
+            wall_conduit { name wall_conduit; }
+            wall_lower { name wall_lower; }
+            wall_upper { name wall_upper; }
+            wall_rotor { name wall_rotor; }
+        }
+    }
+
+    MRFcyl
+    {
+        type    searchableCylinder;
+        point1  (0 0 -0.02);
+        point2  (0 0  0.02);
+        radius  0.18;
+    }
+};
+
+castellatedMeshControls
+{
+    maxLocalCells 400000;
+    maxGlobalCells 2000000;
+    minRefinementCells 0;
+    maxLoadUnbalance 0.10;
+    nCellsBetweenLevels 2;
+
+    features
+    (
+        { file "chamber.eMesh"; level   1; }
+    );
+
+    refinementSurfaces
+    {
+        chamber
+        {
+            level (0 0);
+            regions
+            {
+                wall_upper { level (1 1); }
+                wall_lower { level (1 1); }
+                wall_rotor { level (1 2); }
+                wall_conduit { level (1 2); }
+            }
+        }
+        MRFcyl
+        {
+            level (1 1);
+            faceZone MRFFZone;
+            cellZone MRFCZone;
+            cellZoneInside inside;    // outside/insidePoint
+            insidePoint    (0 0 0.011);   // if (cellZoneInside == insidePoint)
+        }
+    }
+
+    resolveFeatureAngle 30;
+
+    planarAngle 30;
+
+    refinementRegions
+    {
+        chamber.stl
+        {
+            mode inside;
+            levels ((1.0 1));
+            // gapLevel (<numGapCells> <minLevel> <maxlevel>);
+            gapLevel    (4 0 6);
+            gapMode     inside;
+            gapSelf     true;
+        }
+    }
+
+    locationInMesh (0 0 0.051);
+    allowFreeStandingZoneFaces false; // WAS FALSE!!
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 4.0; //2.0;
+    nSolveIter 300; // 30 / 50 / 100
+    nRelaxIter 5; // 5 / 10 / 20
+    nFeatureSnapIter 10; // 10 / 20 / 100
+    implicitFeatureSnap true; // default was false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap true; // default was false;
+}
+
+addLayersControls
+{
+    relativeSizes true;
+
+    layers
+    {
+    }
+
+    expansionRatio 1.0;
+    finalLayerThickness 0.3;
+    minThickness 0.1;
+    nGrow 0;
+    featureAngle 30;
+    nRelaxIter 3;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedialAxisAngle 90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+}
+
+meshQualityControls
+{
+    maxNonOrtho 65;
+    maxBoundarySkewness 20;
+    maxInternalSkewness 4;
+    maxConcave 80;
+    minVol 1e-13;
+    minTetQuality -1;
+    minArea -1;
+    minTwist 0.01;
+    minDeterminant 0.001;
+    minFaceWeight 0.05;
+    minVolRatio 0.01;
+    minTriangleTwist -1;
+    nSmoothScale 4;
+    errorReduction 0.75;
+    relaxed
+    {
+        maxNonOrtho 75;
+    }
+}
+
+mergeTolerance 1e-6;

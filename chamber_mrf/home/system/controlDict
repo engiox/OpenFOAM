@@ -1,0 +1,70 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+application     simpleFoam; //pimpleFoam;
+
+/* TIME CONTROL  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+startFrom
+    //  firstTime;	// Earliest time step from time directories
+		startTime;	// Time specified by the "startTime"
+    //	latestTime;	// Most recent time step from time directories
+startTime       0;
+stopAt
+        endTime;	// Time specified by "endTime" keyword entry
+    //	writeNow;	// Stops on current time step and writes data
+    //	noWriteNow;	// Stops on current time step and NOT writes data
+    //	nextWrite;	// Stops on next write time, specified by "writeControl"
+endTime         1000; //1;
+deltaT          1; //0.0002;
+
+/* TIME STEP CONTROL * * * * * * * * * * * * * * * * * * * * * * * * * * * * */ 
+adjustTimeStep  yes;
+maxCo           0.8;
+maxDeltaT       0.5;
+maxAlphaCo      0.5;
+
+/* DATA WRITING  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+writeControl
+        timeStep;	    	// every "writeInterval" time steps
+    //	runTime;	    	// every "writeInterval" seconds of simulated time
+    // 	adjustableRunTime;	// coincide with the "writeInterval"
+    //	cpuTime;	    	// every "writeInterval" seconds of CPU time
+    //	clockTime;	    	// every "writeInterval" seconds of real time
+writeInterval   100; //0.02;
+purgeWrite      0;		// number of time directories to keep
+writeFormat
+        ascii;
+     // binary;
+writePrecision  7;	// 6 by default
+writeCompression no;	// on/off, yes/no, true/false, uncompressed/compressed
+timeFormat
+        general;	// (default) scientific if exp<-4 or exp>="timePrecision"
+    //  fixed;		// ¡¾m.dddddd  ... d set by "timePrecision"
+    //  scientific;	// ¡¾m.dddddde¡¾xx  ... d set by "timePrecision"
+timePrecision   6;		// (default) 6
+graphFormat
+        raw;		// (default) Raw ASCII format in columns
+     // gnuplot;
+     // xmgr;
+     // jplot;
+
+/* DATA READING  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+runTimeModifiable yes;
+
+// libs & functions
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
