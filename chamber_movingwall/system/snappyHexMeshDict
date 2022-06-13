@@ -1,0 +1,173 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry
+{
+    chamber.stl
+    {
+        type triSurfaceMesh;
+        name chamber;
+
+        regions
+        {
+            inlet { name inlet; }
+            outlet { name outlet; }
+            wall_conduit { name wall_conduit; }
+            wall_upper { name wall_upper; }
+            wall_lower { name wall_lower; }
+            wall_rotor { name wall_rotor; }
+        }
+    }
+//    MRFcyl
+//    {
+//        type    searchableCylinder;
+//        point1  (0 0 -0.02);
+//        point2  (0 0  0.02);
+//        radius  0.18;
+//    }
+};
+
+castellatedMeshControls
+{
+    maxLocalCells 100000;
+    maxGlobalCells 8000000;
+    minRefinementCells 0;
+    maxLoadUnbalance 0.10;
+    nCellsBetweenLevels 2;
+
+    features
+    (
+        { file "chamber.eMesh"; level 0; }
+        //{ file "someLine.eMesh"; levels ((0.1 2)); }  // level 2 witin range 0.1
+    );
+
+    refinementSurfaces
+    {
+        chamber
+        {
+            level (0 0);
+
+            regions
+            {
+                inlet { level (0 0); patchInfo { type patch; } }
+                outlet { level (0 0); patchInfo { type patch; } }
+                wall_upper { level (0 0); }
+                wall_lower { level (0 0); }
+                wall_rotor { level (0 0); }
+                wall_conduit { level (0 0); }
+            }
+        }
+
+//        MRFCyl
+//        {
+//            level (2 2); // Note: better: levels 3 3
+//            faceType boundary;
+//            cellZone rotorCZone;
+//            faceZone rotorFZone;
+//            cellZoneInside inside;
+//        }
+    }
+
+    resolveFeatureAngle 30; // was 30
+
+//    gapLevelIncrement 4;
+
+    planarAngle 30;
+
+    refinementRegions
+    {
+        chamber
+        {
+            mode inside;
+            levels ((1.0 0));
+            // gapLevel (<numGapCells> <minLevel> <maxlevel>);
+            gapLevel    (6 0 6);
+            gapMode     inside;
+            gapSelf     true;
+        }
+    }
+
+    limitRegions
+    {
+    }
+
+    locationInMesh (0.0001 0.0001 0.0101);
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 4.0; // 2.0
+    nSolveIter 300; // 50
+    nRelaxIter 5; // 10
+    nFeatureSnapIter 10; // 20
+    implicitFeatureSnap true; // default was false;
+    explicitFeatureSnap false;
+    multiRegionFeatureSnap true; // default was false;
+}
+
+addLayersControls
+{
+    relativeSizes true;
+
+    layers
+    {
+    }
+
+    expansionRatio 1.0;
+    finalLayerThickness 0.3;
+    minThickness 0.1;
+    nGrow 0;
+    featureAngle 30;
+    nRelaxIter 3;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedialAxisAngle 90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+}
+
+meshQualityControls
+{
+    maxNonOrtho 65;
+    maxBoundarySkewness 4; //20;
+    maxInternalSkewness 1; //4;
+    maxConcave 80;
+    minVol 1e-13;
+    minTetQuality -1;
+    minArea -1;
+    minTwist 0.01;
+    minDeterminant 0.001;
+    minFaceWeight 0.05;
+    minVolRatio 0.01;
+    minTriangleTwist -1;
+    nSmoothScale 4;
+    errorReduction 0.75;
+    relaxed
+    {
+        maxNonOrtho 75;
+    }
+}
+
+mergeTolerance 1e-6;
