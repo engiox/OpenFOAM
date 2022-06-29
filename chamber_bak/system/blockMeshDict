@@ -13,6 +13,7 @@ FoamFile
     object      blockMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// urfaceCheck cb_nozzle_c_mov/constant/triSurface/cb_nozzle_c.stl | grep -i '^bounding box' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?' | tr '\n' ' '; echo "
 
 scale       0.001;
 
